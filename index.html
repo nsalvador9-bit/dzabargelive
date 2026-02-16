@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dzabarge Live – Suivi des barges Mayotte</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(to bottom, #003366, #005599);
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 40px 20px 20px 20px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    p {
+      opacity: 0.9;
+    }
+
+    .container {
+      background: white;
+      color: #333;
+      margin: 30px auto;
+      padding: 25px;
+      max-width: 600px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background: #007aff;
+      color: white;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005ecb;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f4f4f4;
+    }
+
+    footer {
+      margin: 40px 0 20px 0;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🚢 Dzabarge Live</h1>
+  <p>Suivi collaboratif des barges – Mayotte 🇾🇹</p>
+</header>
+
+<div class="container">
+
+  <h2>💬 État des départs</h2>
+
+  <form id="bargeForm">
+
+    <select id="barge" required>
+      <option value="">Choisir une barge</option>
+      <option>Le Polé</option>
+      <option>Le Karihani</option>
+      <option>Georges Nahouda</option>
+      <option>Chatouilleuse</option>
+      <option>Imane</option>
+    </select>
+
+    <div style="text-align:left;">
+      <label>
+        <input type="radio" name="statut" value="Pleine" required> 🟢 Pleine
+      </label><br>
+      <label>
+        <input type="radio" name="statut" value="À vide"> 🟡 À vide
+      </label>
+    </div>
+
+    <textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
+
+    <button type="submit">Envoyer l'information</button>
+
+  </form>
+
+  <div id="resultat"></div>
+
+</div>
+
+<footer>
+  Informations collaboratives non officielles – Dzabarge Live © 2026
+</footer>
+
+<script>
+  document.getElementById("bargeForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const barge = document.getElementById("barge").value;
+    const statut = document.querySelector('input[name="statut"]:checked').value;
+    const commentaire = document.getElementById("commentaire").value;
+    const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    const couleur = statut === "Pleine" ? "green" : "orange";
+
+    document.getElementById("resultat").innerHTML = `
+      <div class="result">
+        <strong style="color:${couleur};">🚢 ${barge}</strong><br>
+        📍 ${statut} – ${heure}<br>
+        💬 ${commentaire ? commentaire : "Aucun commentaire"}
+      </div>
+    `;
+
+    document.getElementById("bargeForm").reset();
+  });
+</script>
+
+</body>
+</html>

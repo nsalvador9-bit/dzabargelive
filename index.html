@@ -19,6 +19,19 @@ body {
   color: white;
   padding: 12px 20px;
   font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar button {
+  background: white;
+  color: #002b5c;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .header {
@@ -57,56 +70,8 @@ h2 {
   color: #002b5c;
 }
 
-select, textarea, input[type="number"] {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-button {
-  background: #002b5c;
-  color: white;
-  border: none;
-  padding: 14px;
-  width: 100%;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #001f42;
-}
-
-.badge-retard {
-  background: #c62828;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  margin-left: 6px;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-.result {
-  margin-top: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  background: #f0f2f5;
-}
-
-.history {
-  margin-top: 20px;
-  font-size: 14px;
+.hidden {
+  display: none;
 }
 
 .footer {
@@ -123,7 +88,8 @@ button:hover {
 <body>
 
 <div class="topbar">
-Service numérique d'information – Mayotte 🇾🇹
+<span>Service numérique – Mayotte 🇾🇹</span>
+<button onclick="toggleAbout()">🛡️ À propos</button>
 </div>
 
 <div class="header">
@@ -132,103 +98,67 @@ Service numérique d'information – Mayotte 🇾🇹
 </div>
 
 <div class="container">
-<div class="card">
 
-<h2>État des départs</h2>
+<!-- PAGE PRINCIPALE -->
+<div id="mainPage" class="card">
+<h2>Bienvenue</h2>
+<p>
+Dzabarge Live est une plateforme numérique collaborative permettant
+de suivre l'état des barges maritimes entre Petite-Terre et Grande-Terre.
+</p>
 
-<form id="bargeForm">
-
-<select id="barge" required>
-<option value="">Choisir une barge</option>
-<option>Le Polé</option>
-<option>Le Karihani</option>
-<option>Georges Nahouda</option>
-<option>Chatouilleuse</option>
-<option>Imane</option>
-</select>
-
-<label><input type="radio" name="statut" value="Pleine" required> 🟢 Pleine</label><br>
-<label><input type="radio" name="statut" value="À vide"> 🟡 À vide</label><br>
-<label><input type="radio" name="statut" value="En retard"> 🔴 En retard ⏱</label>
-
-<div id="retardContainer" style="display:none;">
-<input type="number" id="minutesRetard" placeholder="Nombre de minutes de retard">
+<p>
+Les informations publiées sont issues de contributions des utilisateurs.
+</p>
 </div>
 
-<textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
+<!-- PAGE A PROPOS -->
+<div id="aboutPage" class="card hidden">
 
-<button type="submit">Publier l'information</button>
+<h2>🛡️ À propos de Dzabarge Live</h2>
 
-</form>
+<p><strong>Mission :</strong><br>
+Faciliter l'information des usagers sur l'état des barges à Mayotte.
+</p>
 
-<div id="resultat"></div>
-<div id="historique" class="history"></div>
+<p><strong>Nature du service :</strong><br>
+Dzabarge Live est un service numérique indépendant et collaboratif.
+Il ne constitue pas un service officiel d'une autorité publique.
+</p>
+
+<p><strong>Responsabilité :</strong><br>
+Les informations publiées sont indicatives et peuvent évoluer.
+Il est recommandé de vérifier auprès des sources officielles
+pour toute information critique.
+</p>
+
+<p><strong>Protection des données :</strong><br>
+Aucune donnée personnelle n'est collectée automatiquement.
+</p>
+
+<p><strong>Contact :</strong><br>
+Pour toute question ou suggestion :<br>
+contact@dzabargelive.store
+</p>
+
+<button onclick="toggleAbout()">⬅ Retour</button>
 
 </div>
+
 </div>
 
 <div class="footer">
-Dzabarge Live © 2026 – Informations collaboratives non officielles
+Dzabarge Live © 2026 – Service indépendant
 </div>
 
 <script>
+function toggleAbout() {
+  const main = document.getElementById("mainPage");
+  const about = document.getElementById("aboutPage");
 
-const radios = document.querySelectorAll('input[name="statut"]');
-const retardContainer = document.getElementById("retardContainer");
-
-radios.forEach(radio => {
-  radio.addEventListener("change", function() {
-    retardContainer.style.display = this.value === "En retard" ? "block" : "none";
-  });
-});
-
-let historiqueRetards = [];
-
-document.getElementById("bargeForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const barge = document.getElementById("barge").value;
-  const statut = document.querySelector('input[name="statut"]:checked').value;
-  const commentaire = document.getElementById("commentaire").value;
-  const minutes = document.getElementById("minutesRetard").value;
-  const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-  let affichageStatut;
-
-  if (statut === "Pleine") {
-    affichageStatut = "🟢 Pleine";
-  } 
-  else if (statut === "À vide") {
-    affichageStatut = "🟡 À vide";
-  } 
-  else {
-    affichageStatut = `🔴 En retard <span class="badge-retard">${minutes || 0} min</span>`;
-    historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
-  }
-
-  document.getElementById("resultat").innerHTML = `
-  <div class="result">
-  <strong>🚢 ${barge}</strong><br>
-  ${affichageStatut}<br>
-  🕒 ${heure}<br>
-  💬 ${commentaire || "Aucun commentaire"}
-  </div>
-  `;
-
-  afficherHistorique();
-
-  document.getElementById("bargeForm").reset();
-  retardContainer.style.display = "none";
-});
-
-function afficherHistorique() {
-  const container = document.getElementById("historique");
-  container.innerHTML = "<h3>Historique des retards récents</h3>";
-  historiqueRetards.slice(-5).reverse().forEach(item => {
-    container.innerHTML += `<div>• ${item}</div>`;
-  });
+  main.classList.toggle("hidden");
+  about.classList.toggle("hidden");
 }
-
 </script>
 
 </body>

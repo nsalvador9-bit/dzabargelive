@@ -3,11 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dzabarge Live – Suivi officiel des barges à Mayotte</title>
-
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<title>Dzabarge Live – Suivi des barges à Mayotte</title>
 
 <style>
 body {
@@ -17,7 +13,7 @@ body {
   color: #1c1c1e;
 }
 
-/* Header */
+/* HEADER */
 .topbar {
   background: #002b5c;
   color: white;
@@ -42,9 +38,9 @@ body {
   color: #555;
 }
 
-/* Layout */
+/* LAYOUT */
 .container {
-  max-width: 900px;
+  max-width: 800px;
   margin: 30px auto;
   padding: 20px;
 }
@@ -54,7 +50,6 @@ body {
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  margin-bottom: 25px;
 }
 
 h2 {
@@ -122,11 +117,6 @@ button:hover {
   font-size: 13px;
   margin-top: 40px;
 }
-
-#map {
-  height: 400px;
-  border-radius: 12px;
-}
 </style>
 </head>
 
@@ -138,19 +128,12 @@ Service numérique d'information – Mayotte 🇾🇹
 
 <div class="header">
 <h1>🚢 Dzabarge Live</h1>
-<div class="subtitle">Plateforme officielle de suivi collaboratif des barges maritimes</div>
+<div class="subtitle">Plateforme de suivi collaboratif des barges maritimes</div>
 </div>
 
 <div class="container">
-
-<!-- CARTE -->
 <div class="card">
-<h2>Carte en direct – Position des barges</h2>
-<div id="map"></div>
-</div>
 
-<!-- FORMULAIRE -->
-<div class="card">
 <h2>État des départs</h2>
 
 <form id="bargeForm">
@@ -185,104 +168,65 @@ Service numérique d'information – Mayotte 🇾🇹
 </div>
 
 <div class="footer">
-Dzabarge Live © 2026 – Service indépendant – Informations collaboratives non officielles
+Dzabarge Live © 2026 – Informations collaboratives non officielles
 </div>
 
 <script>
-
-/* ================= CARTE ================= */
-
-var map = L.map('map').setView([-12.8275, 45.1662], 12);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
- attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
-var barges = [
- {name: "Le Polé", lat: -12.7845, lng: 45.2712},
- {name: "Le Karihani", lat: -12.8010, lng: 45.2200},
- {name: "Georges Nahouda", lat: -12.8200, lng: 45.1900},
- {name: "Chatouilleuse", lat: -12.8100, lng: 45.2400},
- {name: "Imane", lat: -12.7950, lng: 45.2600}
-];
-
-var markers = {};
-
-barges.forEach(function(barge) {
- var marker = L.marker([barge.lat, barge.lng])
-   .addTo(map)
-   .bindPopup("🚢 " + barge.name);
- markers[barge.name] = marker;
-});
-
-/* ================= FORMULAIRE ================= */
 
 const radios = document.querySelectorAll('input[name="statut"]');
 const retardContainer = document.getElementById("retardContainer");
 
 radios.forEach(radio => {
- radio.addEventListener("change", function() {
-   retardContainer.style.display = this.value === "En retard" ? "block" : "none";
- });
+  radio.addEventListener("change", function() {
+    retardContainer.style.display = this.value === "En retard" ? "block" : "none";
+  });
 });
 
 let historiqueRetards = [];
 
 document.getElementById("bargeForm").addEventListener("submit", function(e) {
- e.preventDefault();
+  e.preventDefault();
 
- const barge = document.getElementById("barge").value;
- const statut = document.querySelector('input[name="statut"]:checked').value;
- const commentaire = document.getElementById("commentaire").value;
- const minutes = document.getElementById("minutesRetard").value;
- const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  const barge = document.getElementById("barge").value;
+  const statut = document.querySelector('input[name="statut"]:checked').value;
+  const commentaire = document.getElementById("commentaire").value;
+  const minutes = document.getElementById("minutesRetard").value;
+  const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
- let affichageStatut;
- let iconColor;
+  let affichageStatut;
 
- if (statut === "Pleine") {
-   affichageStatut = "🟢 Pleine";
-   iconColor = "green";
- } 
- else if (statut === "À vide") {
-   affichageStatut = "🟡 À vide";
-   iconColor = "orange";
- } 
- else {
-   affichageStatut = `🔴 En retard <span class="badge-retard">${minutes || 0} min</span>`;
-   iconColor = "red";
-   historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
- }
+  if (statut === "Pleine") {
+    affichageStatut = "🟢 Pleine";
+  } 
+  else if (statut === "À vide") {
+    affichageStatut = "🟡 À vide";
+  } 
+  else {
+    affichageStatut = `🔴 En retard <span class="badge-retard">${minutes || 0} min</span>`;
+    historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
+  }
 
- // Change couleur du marqueur
- markers[barge].setIcon(
-   L.icon({
-     iconUrl: `https://maps.google.com/mapfiles/ms/icons/${iconColor}-dot.png`,
-     iconSize: [32, 32]
-   })
- );
+  document.getElementById("resultat").innerHTML = `
+  <div class="result">
+  <strong>🚢 ${barge}</strong><br>
+  ${affichageStatut}<br>
+  🕒 ${heure}<br>
+  💬 ${commentaire || "Aucun commentaire"}
+  </div>
+  `;
 
- document.getElementById("resultat").innerHTML = `
- <div class="result">
- <strong>🚢 ${barge}</strong><br>
- ${affichageStatut}<br>
- 🕒 ${heure}<br>
- 💬 ${commentaire || "Aucun commentaire"}
- </div>
- `;
+  afficherHistorique();
 
- afficherHistorique();
-
- document.getElementById("bargeForm").reset();
- retardContainer.style.display = "none";
+  document.getElementById("bargeForm").reset();
+  retardContainer.style.display = "none";
 });
 
 function afficherHistorique() {
- const container = document.getElementById("historique");
- container.innerHTML = "<h3>Historique des retards récents</h3>";
- historiqueRetards.slice(-5).reverse().forEach(item => {
-   container.innerHTML += `<div>• ${item}</div>`;
- });
+  const container = document.getElementById("historique");
+  container.innerHTML = "<h3>Historique des retards récents</h3>";
+  historiqueRetards.slice(-5).reverse().forEach(item => {
+    container.innerHTML += `<div>• ${item}</div>`;
+  });
 }
 
 </script>

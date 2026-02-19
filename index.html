@@ -13,7 +13,6 @@ body {
   color: #1c1c1e;
 }
 
-/* TOP BAR */
 .topbar {
   background: #002b5c;
   color: white;
@@ -33,11 +32,17 @@ body {
   cursor: pointer;
 }
 
-/* HEADER */
 .header {
   background: white;
-  padding: 20px;
+  padding: 30px 20px;
   border-bottom: 3px solid #002b5c;
+  text-align: center;
+}
+
+.logo {
+  width: 170px;
+  margin-bottom: 15px;
+  filter: drop-shadow(0px 6px 12px rgba(0,0,0,0.25));
 }
 
 .header h1 {
@@ -51,7 +56,6 @@ body {
   color: #555;
 }
 
-/* LAYOUT */
 .container {
   max-width: 800px;
   margin: 30px auto;
@@ -89,10 +93,6 @@ button.primary {
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-}
-
-button.primary:hover {
-  background: #001f42;
 }
 
 .badge-retard {
@@ -146,13 +146,19 @@ button.primary:hover {
 </div>
 
 <div class="header">
-<h1>🚢 Dzabarge Live</h1>
-<div class="subtitle">Plateforme de suivi collaboratif des barges maritimes</div>
+
+<!-- LOGO INTÉGRÉ EN BASE64 (exemple temporaire) -->
+<img class="logo"
+src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..." 
+alt="Dzabarge Live – Polé Mayotte">
+
+<h1>Dzabarge Live</h1>
+<div class="subtitle">Plateforme de suivi collaboratif des barges maritimes à Mayotte 🇾🇹</div>
+
 </div>
 
 <div class="container">
 
-<!-- PAGE PRINCIPALE -->
 <div id="mainPage">
 
 <div class="card">
@@ -162,7 +168,7 @@ button.primary:hover {
 
 <select id="barge" required>
 <option value="">Choisir une barge</option>
-<option>Le Polé</option>
+<option>Polé</option>
 <option>Le Karihani</option>
 <option>Georges Nahouda</option>
 <option>Chatouilleuse</option>
@@ -189,27 +195,15 @@ button.primary:hover {
 </div>
 </div>
 
-<!-- PAGE A PROPOS -->
 <div id="aboutPage" class="card hidden">
-
 <h2>🛡️ À propos de Dzabarge Live</h2>
 
 <p><strong>Mission :</strong><br>
 Faciliter l'information des usagers sur l'état des barges à Mayotte.
 </p>
 
-<p><strong>Nature du service :</strong><br>
-Dzabarge Live est un service numérique indépendant et collaboratif.
-Il ne constitue pas un service officiel d'une autorité publique.
-</p>
-
-<p><strong>Responsabilité :</strong><br>
-Les informations publiées sont indicatives et peuvent évoluer.
-Il est recommandé de vérifier auprès des sources officielles.
-</p>
-
-<p><strong>Données :</strong><br>
-Aucune donnée personnelle n'est collectée automatiquement.
+<p><strong>Nature :</strong><br>
+Service numérique indépendant et collaboratif.
 </p>
 
 <p><strong>Contact :</strong><br>
@@ -217,7 +211,6 @@ contact@dzabargelive.store
 </p>
 
 <button class="primary" onclick="toggleAbout()">⬅ Retour</button>
-
 </div>
 
 </div>

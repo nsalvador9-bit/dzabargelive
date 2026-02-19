@@ -3,51 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dzabarge Live – Suivi maritime de Mayotte</title>
+<title>Dzabarge Live – Service numérique maritime de Mayotte</title>
 
 <style>
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  background: #f4f6f9;
+  background: #f2f4f7;
   color: #1c1c1e;
 }
 
 .topbar {
   background: #002b5c;
   color: white;
-  padding: 12px 20px;
-  text-align: center;
+  padding: 10px 20px;
+  font-size: 14px;
 }
 
 .header {
   background: white;
-  padding: 40px 20px;
-  border-bottom: 3px solid #002b5c;
   text-align: center;
+  padding: 40px 20px;
+  border-bottom: 4px solid #002b5c;
 }
 
 .logo {
-  width: 220px;
-  margin-bottom: 20px;
-  filter: drop-shadow(0px 8px 18px rgba(0,0,0,0.25));
+  width: 200px;
+  margin-bottom: 15px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #002b5c;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-top: 8px;
 }
 
 .container {
-  max-width: 800px;
-  margin: 30px auto;
+  max-width: 900px;
+  margin: 40px auto;
   padding: 20px;
 }
 
-.card {
+.section {
   background: white;
-  padding: 25px;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
 }
 
-h2 {
+.section h2 {
   margin-top: 0;
   color: #002b5c;
 }
@@ -58,10 +69,9 @@ select, textarea, input[type="number"] {
   margin: 10px 0;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 14px;
 }
 
-button.primary {
+button {
   background: #002b5c;
   color: white;
   border: none;
@@ -92,21 +102,15 @@ button.primary {
   margin-top: 15px;
   padding: 15px;
   border-radius: 8px;
-  background: #f0f2f5;
-}
-
-.history {
-  margin-top: 20px;
-  font-size: 14px;
+  background: #eef1f5;
 }
 
 .footer {
   background: #002b5c;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 25px;
   font-size: 13px;
-  margin-top: 40px;
 }
 </style>
 </head>
@@ -114,18 +118,29 @@ button.primary {
 <body>
 
 <div class="topbar">
-Service numérique – Mayotte 🇾🇹
+Service numérique d'information – Département de Mayotte 🇾🇹
 </div>
 
 <div class="header">
-<img class="logo" src="logo-dzabarge.png" alt="Dzabarge Live">
+<img src="logo-dzabarge.png" class="logo" alt="Dzabarge Live">
 <h1>Dzabarge Live</h1>
-<p>Suivi maritime collaboratif à Mayotte</p>
+<div class="subtitle">
+Plateforme numérique de suivi collaboratif des barges maritimes entre Petite-Terre et Grande-Terre
+</div>
 </div>
 
 <div class="container">
 
-<div class="card">
+<div class="section">
+<h2>Mission</h2>
+<p>
+Dzabarge Live vise à faciliter l'information des usagers concernant
+l'état des barges maritimes à Mayotte.
+Les données publiées sont issues de contributions collaboratives.
+</p>
+</div>
+
+<div class="section">
 <h2>État des départs</h2>
 
 <form id="bargeForm">
@@ -149,19 +164,28 @@ Service numérique – Mayotte 🇾🇹
 
 <textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
 
-<button type="submit" class="primary">Publier</button>
+<button type="submit">Publier l'information</button>
 
 </form>
 
 <div id="resultat"></div>
-<div id="historique" class="history"></div>
+<div id="historique"></div>
 
+</div>
+
+<div class="section">
+<h2>Transparence</h2>
+<p>
+Dzabarge Live est un service numérique indépendant.
+Les informations diffusées sont indicatives.
+Pour toute information officielle, veuillez consulter les autorités compétentes.
+</p>
 </div>
 
 </div>
 
 <div class="footer">
-Dzabarge Live © 2026 – Service indépendant
+Dzabarge Live © 2026 – Service numérique indépendant – contact@dzabargelive.store
 </div>
 
 <script>
@@ -175,8 +199,8 @@ radios.forEach(radio => {
   });
 });
 
-// Charger historique sauvegardé
 let historiqueRetards = JSON.parse(localStorage.getItem("historique")) || [];
+
 afficherHistorique();
 
 document.getElementById("bargeForm").addEventListener("submit", function(e) {
@@ -184,7 +208,6 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
 
   const barge = document.getElementById("barge").value;
   const statut = document.querySelector('input[name="statut"]:checked').value;
-  const commentaire = document.getElementById("commentaire").value;
   const minutes = document.getElementById("minutesRetard").value;
   const heure = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
 
@@ -192,11 +215,9 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
 
   if (statut === "Pleine") {
     affichageStatut = "🟢 Pleine";
-  } 
-  else if (statut === "À vide") {
+  } else if (statut === "À vide") {
     affichageStatut = "🟡 À vide";
-  } 
-  else {
+  } else {
     affichageStatut = `🔴 En retard <span class="badge-retard">${minutes || 0} min</span>`;
     historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
     localStorage.setItem("historique", JSON.stringify(historiqueRetards));
@@ -206,8 +227,7 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
   <div class="result">
   <strong>🚢 ${barge}</strong><br>
   ${affichageStatut}<br>
-  🕒 ${heure}<br>
-  💬 ${commentaire || "Aucun commentaire"}
+  🕒 ${heure}
   </div>
   `;
 

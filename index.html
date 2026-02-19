@@ -143,6 +143,7 @@ button.primary {
 
 <div class="container">
 
+<!-- ACCUEIL -->
 <div id="accueil" class="section">
 
 <h2>État des départs des barges</h2>
@@ -180,23 +181,29 @@ button.primary {
 
 </div>
 
+<!-- A PROPOS -->
 <div id="apropos" class="section hidden">
 <h2>À propos</h2>
 <p>
-Dzabarge Live est un service numérique indépendant visant à faciliter l'information
-des usagers concernant l'état des barges maritimes entre Petite-Terre et Grande-Terre.
+Dzabarge Live est un service numérique indépendant visant à faciliter
+l'information des usagers concernant l'état des barges maritimes entre
+Petite-Terre et Grande-Terre.
 </p>
 <p>
-Les informations sont issues de contributions collaboratives et sont indicatives.
+Les informations sont issues de contributions collaboratives
+et sont strictement indicatives.
 </p>
 </div>
 
+<!-- MENTIONS -->
 <div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
 <p><strong>Éditeur :</strong> Nicolas Salvador</p>
+
 <p><strong>Contact :</strong> 
-<a href="mailto:nsalvador9@ik.me">nsalvador9@ik.me</a>
+<span id="email">Cliquez pour afficher l'adresse</span>
 </p>
+
 <p><strong>Hébergement :</strong> GitHub Pages – GitHub, Inc.</p>
 <p>Service numérique indépendant soumis au droit français.</p>
 </div>
@@ -268,6 +275,26 @@ function afficherHistorique() {
   });
 }
 
+/* 🔐 Protection anti-bot avancée invisible */
+(function() {
+  let revealed = false;
+
+  function revealEmail() {
+    if (revealed) return;
+
+    const user = ["n","s","a","l","v","a","d","o","r","9"].join("");
+    const domain = ["i","k",".","m","e"].join("");
+    const email = user + "@" + domain;
+
+    const container = document.getElementById("email");
+    container.innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
+    revealed = true;
+  }
+
+  document.addEventListener("mousemove", revealEmail, { once: true });
+  document.addEventListener("touchstart", revealEmail, { once: true });
+  document.getElementById("email").addEventListener("click", revealEmail);
+})();
 </script>
 
 </body>

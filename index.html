@@ -21,6 +21,23 @@ body {
   font-size: 14px;
 }
 
+.navbar {
+  background: white;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  padding: 12px;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  margin: 0 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #002b5c;
+  cursor: pointer;
+}
+
 .header {
   background: white;
   text-align: center;
@@ -31,18 +48,6 @@ body {
 .logo {
   width: 200px;
   margin-bottom: 15px;
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 28px;
-  color: #002b5c;
-}
-
-.subtitle {
-  font-size: 15px;
-  color: #555;
-  margin-top: 8px;
 }
 
 .container {
@@ -64,6 +69,10 @@ body {
   color: #002b5c;
 }
 
+.hidden {
+  display: none;
+}
+
 select, textarea, input[type="number"] {
   width: 100%;
   padding: 12px;
@@ -72,7 +81,7 @@ select, textarea, input[type="number"] {
   border: 1px solid #ccc;
 }
 
-button {
+button.primary {
   background: #002b5c;
   color: white;
   border: none;
@@ -122,26 +131,23 @@ button {
 Service numérique d'information – Département de Mayotte 🇾🇹
 </div>
 
+<div class="navbar">
+<button onclick="showSection('accueil')">Accueil</button>
+<button onclick="showSection('apropos')">À propos</button>
+<button onclick="showSection('mentions')">Mentions légales</button>
+</div>
+
 <div class="header">
 <img src="logo-dzabarge.png" class="logo" alt="Dzabarge Live">
 <h1>Dzabarge Live</h1>
-<div class="subtitle">
-Plateforme numérique collaborative de suivi des barges maritimes
-entre Petite-Terre et Grande-Terre
-</div>
+<p>Plateforme numérique collaborative de suivi des barges maritimes</p>
 </div>
 
 <div class="container">
 
-<div class="section">
-<h2>Mission</h2>
-<p>
-Dzabarge Live facilite l'information des usagers concernant l'état des
-barges maritimes à Mayotte. Les données publiées sont issues de contributions collaboratives.
-</p>
-</div>
+<!-- ACCUEIL -->
+<div id="accueil" class="section">
 
-<div class="section">
 <h2>État des départs</h2>
 
 <form id="bargeForm">
@@ -165,7 +171,7 @@ barges maritimes à Mayotte. Les données publiées sont issues de contributions
 
 <textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
 
-<button type="submit">Publier l'information</button>
+<button type="submit" class="primary">Publier l'information</button>
 
 </form>
 
@@ -174,53 +180,21 @@ barges maritimes à Mayotte. Les données publiées sont issues de contributions
 
 </div>
 
-<div class="section">
-<h2>Transparence</h2>
-<p>
-Dzabarge Live est un service numérique indépendant.
-Les informations diffusées sont indicatives et ne constituent
-pas une communication officielle des autorités publiques.
-</p>
+<!-- A PROPOS -->
+<div id="apropos" class="section hidden">
+<h2>À propos</h2>
+<p>Dzabarge Live vise à faciliter l'information des usagers concernant l'état des barges à Mayotte.</p>
+<p>Le service est collaboratif et indépendant.</p>
+<p>Les informations sont enregistrées localement dans le navigateur.</p>
 </div>
 
-<div class="section">
+<!-- MENTIONS LEGALES -->
+<div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
-
-<p><strong>Éditeur :</strong><br>
-Dzabarge Live – Service numérique indépendant<br>
-Responsable de publication : Nicolas Salvador<br>
-Contact : contact@dzabargelive.store
-</p>
-
-<p><strong>Hébergement :</strong><br>
-GitHub Pages – GitHub, Inc.<br>
-88 Colin P. Kelly Jr. Street<br>
-San Francisco, CA 94107 – États-Unis<br>
-https://pages.github.com
-</p>
-
-<p><strong>Responsabilité :</strong><br>
-Les informations publiées sont issues de contributions collaboratives.
-L'éditeur ne saurait être tenu responsable d'éventuelles erreurs ou
-inexactitudes. Il est recommandé de vérifier toute information critique
-auprès des autorités compétentes.
-</p>
-
-<p><strong>Données personnelles :</strong><br>
-Aucune donnée personnelle n'est collectée automatiquement.
-Les informations sont stockées uniquement dans le navigateur
-de l'utilisateur (localStorage).
-</p>
-
-<p><strong>Propriété intellectuelle :</strong><br>
-Le contenu du site est protégé par le droit d'auteur.
-Toute reproduction non autorisée est interdite.
-</p>
-
-<p><strong>Droit applicable :</strong><br>
-Le site est soumis au droit français.
-</p>
-
+<p><strong>Éditeur :</strong> Nicolas Salvador</p>
+<p><strong>Contact :</strong> contact@dzabargelive.store</p>
+<p><strong>Hébergement :</strong> GitHub Pages – GitHub, Inc.</p>
+<p>Service numérique indépendant soumis au droit français.</p>
 </div>
 
 </div>
@@ -230,6 +204,13 @@ Dzabarge Live © 2026 – Service numérique indépendant – Mayotte 🇾🇹
 </div>
 
 <script>
+
+function showSection(sectionId) {
+  document.getElementById("accueil").classList.add("hidden");
+  document.getElementById("apropos").classList.add("hidden");
+  document.getElementById("mentions").classList.add("hidden");
+  document.getElementById(sectionId).classList.remove("hidden");
+}
 
 const radios = document.querySelectorAll('input[name="statut"]');
 const retardContainer = document.getElementById("retardContainer");
@@ -241,7 +222,6 @@ radios.forEach(radio => {
 });
 
 let historiqueRetards = JSON.parse(localStorage.getItem("historique")) || [];
-
 afficherHistorique();
 
 document.getElementById("bargeForm").addEventListener("submit", function(e) {

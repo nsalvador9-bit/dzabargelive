@@ -1,145 +1,241 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dzabarge Live – Suivi des barges Mayotte</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dzabarge Live</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(to bottom, #003366, #005599);
-      color: white;
-      text-align: center;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, sans-serif;
+  background: #f2f2f7;
+  color: #000;
+}
 
-    header {
-      padding: 40px 20px 20px 20px;
-    }
+.app {
+  max-width: 430px;
+  margin: auto;
+  min-height: 100vh;
+  background: #f2f2f7;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 28px;
-    }
+.header {
+  padding: 50px 20px 20px;
+  background: linear-gradient(180deg, #007aff, #0051c7);
+  color: white;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
 
-    p {
-      opacity: 0.9;
-    }
+.header h1 {
+  margin: 0;
+  font-size: 26px;
+}
 
-    .container {
-      background: white;
-      color: #333;
-      margin: 30px auto;
-      padding: 25px;
-      max-width: 600px;
-      border-radius: 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    }
+.subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+}
 
-    select, textarea, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
+.card {
+  background: white;
+  margin: -20px 20px 20px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
 
-    button {
-      background: #007aff;
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-    }
+select, textarea, input[type="number"] {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  background: #f9f9f9;
+}
 
-    button:hover {
-      background: #005ecb;
-    }
+.radio-group {
+  margin: 10px 0;
+  font-size: 15px;
+}
 
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #f4f4f4;
-    }
+.radio-group label {
+  display: block;
+  margin: 8px 0;
+}
 
-    footer {
-      margin: 40px 0 20px 0;
-      font-size: 13px;
-      opacity: 0.8;
-    }
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 16px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: #007aff;
+  color: white;
+  transition: 0.2s;
+}
 
-  </style>
+button:active {
+  transform: scale(0.98);
+}
+
+.result {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 16px;
+  background: #f2f2f7;
+  font-size: 15px;
+}
+
+.badge-retard {
+  background: #ff3b30;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-left: 6px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.history {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  font-size: 12px;
+  padding: 20px;
+  color: #8e8e93;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>🚢 Dzabarge Live</h1>
-  <p>Suivi collaboratif des barges – Mayotte 🇾🇹</p>
-</header>
+<div class="app">
 
-<div class="container">
+  <div class="header">
+    <h1>🚢 Dzabarge Live</h1>
+    <div class="subtitle">Suivi officiel des barges – Mayotte 🇾🇹</div>
+  </div>
 
-  <h2>💬 État des départs</h2>
+  <div class="card">
+    <h3>État des départs</h3>
 
-  <form id="bargeForm">
+    <form id="bargeForm">
 
-    <select id="barge" required>
-      <option value="">Choisir une barge</option>
-      <option>Le Polé</option>
-      <option>Le Karihani</option>
-      <option>Georges Nahouda</option>
-      <option>Chatouilleuse</option>
-      <option>Imane</option>
-    </select>
+      <select id="barge" required>
+        <option value="">Choisir une barge</option>
+        <option>Le Polé</option>
+        <option>Le Karihani</option>
+        <option>Georges Nahouda</option>
+        <option>Chatouilleuse</option>
+        <option>Imane</option>
+      </select>
 
-    <div style="text-align:left;">
-      <label>
-        <input type="radio" name="statut" value="Pleine" required> 🟢 Pleine
-      </label><br>
-      <label>
-        <input type="radio" name="statut" value="À vide"> 🟡 À vide
-      </label>
-    </div>
+      <div class="radio-group">
+        <label><input type="radio" name="statut" value="Pleine" required> 🟢 Pleine</label>
+        <label><input type="radio" name="statut" value="À vide"> 🟡 À vide</label>
+        <label><input type="radio" name="statut" value="En retard"> 🔴 En retard ⏱</label>
+      </div>
 
-    <textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
+      <div id="retardContainer" style="display:none;">
+        <input type="number" id="minutesRetard" placeholder="Nombre de minutes de retard">
+      </div>
 
-    <button type="submit">Envoyer l'information</button>
+      <textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
 
-  </form>
+      <button type="submit">Envoyer</button>
 
-  <div id="resultat"></div>
+    </form>
+
+    <div id="resultat"></div>
+    <div id="historique" class="history"></div>
+
+  </div>
+
+  <div class="footer">
+    Dzabarge Live © 2026 – Interface iOS officielle
+  </div>
 
 </div>
 
-<footer>
-  Informations collaboratives non officielles – Dzabarge Live © 2026
-</footer>
-
 <script>
-  document.getElementById("bargeForm").addEventListener("submit", function(e) {
-    e.preventDefault();
 
-    const barge = document.getElementById("barge").value;
-    const statut = document.querySelector('input[name="statut"]:checked').value;
-    const commentaire = document.getElementById("commentaire").value;
-    const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+const radios = document.querySelectorAll('input[name="statut"]');
+const retardContainer = document.getElementById("retardContainer");
 
-    const couleur = statut === "Pleine" ? "green" : "orange";
-
-    document.getElementById("resultat").innerHTML = `
-      <div class="result">
-        <strong style="color:${couleur};">🚢 ${barge}</strong><br>
-        📍 ${statut} – ${heure}<br>
-        💬 ${commentaire ? commentaire : "Aucun commentaire"}
-      </div>
-    `;
-
-    document.getElementById("bargeForm").reset();
+radios.forEach(radio => {
+  radio.addEventListener("change", function() {
+    if (this.value === "En retard") {
+      retardContainer.style.display = "block";
+    } else {
+      retardContainer.style.display = "none";
+    }
   });
+});
+
+let historiqueRetards = [];
+
+document.getElementById("bargeForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const barge = document.getElementById("barge").value;
+  const statut = document.querySelector('input[name="statut"]:checked').value;
+  const commentaire = document.getElementById("commentaire").value;
+  const minutes = document.getElementById("minutesRetard").value;
+  const heure = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+  let couleur;
+  let affichageStatut;
+
+  if (statut === "Pleine") {
+    couleur = "#34c759";
+    affichageStatut = "🟢 Pleine";
+  } 
+  else if (statut === "À vide") {
+    couleur = "#ffcc00";
+    affichageStatut = "🟡 À vide";
+  } 
+  else {
+    couleur = "#ff3b30";
+    affichageStatut = `🔴 En retard <span class="badge-retard">⏱ ${minutes || 0} min</span>`;
+    historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
+  }
+
+  document.getElementById("resultat").innerHTML = `
+    <div class="result">
+      <strong style="color:${couleur}; font-size:16px;">🚢 ${barge}</strong><br>
+      ${affichageStatut}<br>
+      💬 ${commentaire ? commentaire : "Aucun commentaire"}
+    </div>
+  `;
+
+  afficherHistorique();
+
+  document.getElementById("bargeForm").reset();
+  retardContainer.style.display = "none";
+});
+
+function afficherHistorique() {
+  const container = document.getElementById("historique");
+  container.innerHTML = "<h4>Historique des retards</h4>";
+  historiqueRetards.slice(-5).reverse().forEach(item => {
+    container.innerHTML += `<div>• ${item}</div>`;
+  });
+}
+
 </script>
 
 </body>

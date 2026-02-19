@@ -80,7 +80,7 @@ body {
 
 label {
   display: block;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 select, textarea, input[type="number"] {
@@ -150,6 +150,13 @@ button.primary {
 
 <form id="bargeForm">
 
+<label>Sens du départ</label>
+<select id="sens" required>
+<option value="">Sélectionner le sens</option>
+<option>Grande-Terre → Petite-Terre</option>
+<option>Petite-Terre → Grande-Terre</option>
+</select>
+
 <label>Barge</label>
 <select id="barge" required>
 <option value="">Sélectionner</option>
@@ -184,21 +191,33 @@ button.primary {
 <!-- A PROPOS -->
 <div id="apropos" class="section hidden">
 <h2>À propos</h2>
+
 <p>
 Dzabarge Live est un service numérique indépendant visant à faciliter
 l'information des usagers concernant l'état des barges maritimes entre
-Petite-Terre et Grande-Terre.
+Grande-Terre et Petite-Terre à Mayotte.
 </p>
+
+<p>
+Les départs sont suivis dans les deux sens :
+</p>
+
+<ul>
+<li>Grande-Terre → Petite-Terre</li>
+<li>Petite-Terre → Grande-Terre</li>
+</ul>
+
 <p>
 Les informations sont issues de contributions collaboratives
 et sont strictement indicatives.
 </p>
+
 </div>
 
 <!-- MENTIONS -->
 <div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
-<p><strong>Éditeur :</strong> Nicolas Salvador</p>
+<p><strong>Éditeur :</strong> Nicolas SALVADOR</p>
 
 <p><strong>Contact :</strong> 
 <span id="email">Cliquez pour afficher l'adresse</span>
@@ -239,6 +258,7 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
   const barge = document.getElementById("barge").value;
+  const sens = document.getElementById("sens").value;
   const statut = document.querySelector('input[name="statut"]:checked').value;
   const minutes = document.getElementById("minutesRetard").value;
   const heure = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
@@ -249,12 +269,17 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
   if (statut === "À vide") affichageStatut = "À vide";
   if (statut === "En retard") {
     affichageStatut = `En retard <span class="badge-retard">${minutes || 0} min</span>`;
-    historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
+    historiqueRetards.push(`${barge} – ${sens} – ${minutes || 0} min (${heure})`);
     localStorage.setItem("historique", JSON.stringify(historiqueRetards));
   }
 
   document.getElementById("resultat").innerHTML =
-  `<div class="result"><strong>${barge}</strong><br>${affichageStatut}<br>${heure}</div>`;
+  `<div class="result">
+<strong>${barge}</strong><br>
+${sens}<br>
+${affichageStatut}<br>
+${heure}
+</div>`;
 
   afficherHistorique();
   document.getElementById("bargeForm").reset();
@@ -275,7 +300,7 @@ function afficherHistorique() {
   });
 }
 
-/* 🔐 Protection anti-bot avancée invisible */
+/* Protection anti-bot email */
 (function() {
   let revealed = false;
 
@@ -295,6 +320,7 @@ function afficherHistorique() {
   document.addEventListener("touchstart", revealEmail, { once: true });
   document.getElementById("email").addEventListener("click", revealEmail);
 })();
+
 </script>
 
 </body>

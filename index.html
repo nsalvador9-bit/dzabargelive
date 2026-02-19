@@ -3,116 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dzabarge Live – Service numérique maritime de Mayotte</title>
+<title>Dzabarge Live – Information sur les barges à Mayotte</title>
 
 <style>
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-  background: #f2f4f7;
-  color: #1c1c1e;
-  line-height: 1.6;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f6f6;
+  color: #1c1c1c;
 }
 
 .navbar {
-  background: white;
-  border-bottom: 1px solid #ddd;
+  background: #003366;
+  padding: 14px;
   text-align: center;
-  padding: 12px;
 }
 
 .navbar button {
   background: none;
   border: none;
-  margin: 0 15px;
+  color: white;
   font-size: 14px;
-  font-weight: 600;
-  color: #002b5c;
+  font-weight: bold;
+  margin: 0 20px;
   cursor: pointer;
 }
 
 .header {
   background: white;
+  border-bottom: 4px solid #003366;
+  padding: 30px 20px;
   text-align: center;
-  padding: 40px 20px;
-  border-bottom: 4px solid #002b5c;
 }
 
 .logo {
-  width: 200px;
-  margin-bottom: 15px;
+  width: 170px;
+  margin-bottom: 10px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 26px;
+  color: #003366;
+}
+
+.header p {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .section {
   background: white;
   padding: 30px;
-  border-radius: 12px;
   margin-bottom: 30px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  border: 1px solid #ddd;
 }
 
 .section h2 {
   margin-top: 0;
-  color: #002b5c;
+  font-size: 20px;
+  color: #003366;
+  border-bottom: 2px solid #003366;
+  padding-bottom: 8px;
 }
 
 .hidden {
   display: none;
 }
 
+label {
+  display: block;
+  margin-top: 8px;
+}
+
 select, textarea, input[type="number"] {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
+  padding: 10px;
+  margin-top: 6px;
   border: 1px solid #ccc;
+  font-size: 14px;
 }
 
 button.primary {
-  background: #002b5c;
+  background: #003366;
   color: white;
+  padding: 12px;
   border: none;
-  padding: 14px;
   width: 100%;
-  border-radius: 8px;
-  font-weight: 600;
+  font-weight: bold;
+  margin-top: 15px;
   cursor: pointer;
 }
 
-.badge-retard {
-  background: #c62828;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  margin-left: 6px;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
 .result {
-  margin-top: 15px;
+  margin-top: 20px;
   padding: 15px;
-  border-radius: 8px;
-  background: #eef1f5;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+}
+
+.badge-retard {
+  background: #b00020;
+  color: white;
+  padding: 3px 7px;
+  font-size: 12px;
+  margin-left: 5px;
 }
 
 .footer {
-  background: #002b5c;
+  background: #003366;
   color: white;
   text-align: center;
-  padding: 25px;
+  padding: 20px;
   font-size: 13px;
 }
 </style>
@@ -127,21 +136,22 @@ button.primary {
 </div>
 
 <div class="header">
-<img src="logo-dzabarge.png" class="logo" alt="Dzabarge Live">
+<img src="logo-dzabarge.png" class="logo">
 <h1>Dzabarge Live</h1>
-<p>Plateforme numérique collaborative de suivi des barges maritimes</p>
+<p>Service d'information collaboratif sur les liaisons maritimes à Mayotte</p>
 </div>
 
 <div class="container">
 
 <div id="accueil" class="section">
 
-<h2>État des départs</h2>
+<h2>État des départs des barges</h2>
 
 <form id="bargeForm">
 
+<label>Barge</label>
 <select id="barge" required>
-<option value="">Choisir une barge</option>
+<option value="">Sélectionner</option>
 <option>Polé</option>
 <option>Le Karihani</option>
 <option>Georges Nahouda</option>
@@ -149,17 +159,19 @@ button.primary {
 <option>Imane</option>
 </select>
 
-<label><input type="radio" name="statut" value="Pleine" required> 🟢 Pleine</label><br>
-<label><input type="radio" name="statut" value="À vide"> 🟡 À vide</label><br>
-<label><input type="radio" name="statut" value="En retard"> 🔴 En retard ⏱</label>
+<label><input type="radio" name="statut" value="Pleine" required> Pleine</label>
+<label><input type="radio" name="statut" value="À vide"> À vide</label>
+<label><input type="radio" name="statut" value="En retard"> En retard</label>
 
 <div id="retardContainer" style="display:none;">
-<input type="number" id="minutesRetard" placeholder="Nombre de minutes de retard">
+<label>Nombre de minutes de retard</label>
+<input type="number" id="minutesRetard">
 </div>
 
-<textarea id="commentaire" rows="3" placeholder="Commentaire (optionnel)"></textarea>
+<label>Commentaire (facultatif)</label>
+<textarea id="commentaire" rows="3"></textarea>
 
-<button type="submit" class="primary">Publier l'information</button>
+<button type="submit" class="primary">Publier</button>
 
 </form>
 
@@ -170,15 +182,20 @@ button.primary {
 
 <div id="apropos" class="section hidden">
 <h2>À propos</h2>
-<p>Dzabarge Live facilite l'information des usagers concernant l'état des barges à Mayotte.</p>
-<p>Service numérique indépendant et collaboratif.</p>
+<p>
+Dzabarge Live est un service numérique indépendant visant à faciliter l'information
+des usagers concernant l'état des barges maritimes entre Petite-Terre et Grande-Terre.
+</p>
+<p>
+Les informations sont issues de contributions collaboratives et sont indicatives.
+</p>
 </div>
 
 <div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
-<p>Éditeur : Nicolas Salvador</p>
-<p>Contact : contact@dzabargelive.store</p>
-<p>Hébergement : GitHub Pages – GitHub, Inc.</p>
+<p><strong>Éditeur :</strong> Nicolas Salvador</p>
+<p><strong>Contact :</strong> contact@dzabargelive.store</p>
+<p><strong>Hébergement :</strong> GitHub Pages – GitHub, Inc.</p>
 <p>Service numérique indépendant soumis au droit français.</p>
 </div>
 
@@ -219,23 +236,16 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
 
   let affichageStatut;
 
-  if (statut === "Pleine") {
-    affichageStatut = "🟢 Pleine";
-  } else if (statut === "À vide") {
-    affichageStatut = "🟡 À vide";
-  } else {
-    affichageStatut = `🔴 En retard <span class="badge-retard">${minutes || 0} min</span>`;
+  if (statut === "Pleine") affichageStatut = "Pleine";
+  if (statut === "À vide") affichageStatut = "À vide";
+  if (statut === "En retard") {
+    affichageStatut = `En retard <span class="badge-retard">${minutes || 0} min</span>`;
     historiqueRetards.push(`${barge} – ${minutes || 0} min (${heure})`);
     localStorage.setItem("historique", JSON.stringify(historiqueRetards));
   }
 
-  document.getElementById("resultat").innerHTML = `
-  <div class="result">
-  <strong>🚢 ${barge}</strong><br>
-  ${affichageStatut}<br>
-  🕒 ${heure}
-  </div>
-  `;
+  document.getElementById("resultat").innerHTML =
+  `<div class="result"><strong>${barge}</strong><br>${affichageStatut}<br>${heure}</div>`;
 
   afficherHistorique();
   document.getElementById("bargeForm").reset();

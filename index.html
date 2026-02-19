@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dzabarge Live – Information sur les barges et les amphidromes à Mayotte</title>
+<title>Dzabarge Live – Information sur les barges et amphidromes à Mayotte</title>
 
 <style>
 body {
@@ -117,6 +117,19 @@ button.primary {
   margin-left: 5px;
 }
 
+/* Pastilles officielles */
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.dot-green { background-color: #2e7d32; }
+.dot-grey  { background-color: #757575; }
+.dot-red   { background-color: #b00020; }
+
 .footer {
   background: #003366;
   color: white;
@@ -146,7 +159,7 @@ button.primary {
 <!-- ACCUEIL -->
 <div id="accueil" class="section">
 
-<h2>État des départs des barges et des amphidromes</h2>
+<h2>État des départs des barges et amphidromes</h2>
 
 <form id="bargeForm">
 
@@ -167,7 +180,7 @@ button.primary {
 <option>Imane</option>
 </select>
 
-<label><input type="radio" name="statut" value="Pleine" required> Pleine</label>
+<label><input type="radio" name="statut" value="À l'heure" required> À l’heure</label>
 <label><input type="radio" name="statut" value="À vide"> À vide</label>
 <label><input type="radio" name="statut" value="En retard"> En retard</label>
 
@@ -194,13 +207,11 @@ button.primary {
 
 <p>
 Dzabarge Live est un service numérique indépendant visant à faciliter
-l'information des usagers concernant l'état des barges et des amphidromes entre
+l'information des usagers concernant l'état des barges et amphidromes entre
 Grande-Terre et Petite-Terre à Mayotte.
 </p>
 
-<p>
-Les départs sont suivis dans les deux sens :
-</p>
+<p>Les départs sont suivis dans les deux sens :</p>
 
 <ul>
 <li>Grande-Terre → Petite-Terre</li>
@@ -265,10 +276,14 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
 
   let affichageStatut;
 
-  if (statut === "Pleine") affichageStatut = "Pleine";
-  if (statut === "À vide") affichageStatut = "À vide";
+  if (statut === "À l'heure")
+    affichageStatut = '<span class="status-dot dot-green"></span>À l’heure';
+
+  if (statut === "À vide")
+    affichageStatut = '<span class="status-dot dot-grey"></span>À vide';
+
   if (statut === "En retard") {
-    affichageStatut = `En retard <span class="badge-retard">${minutes || 0} min</span>`;
+    affichageStatut = '<span class="status-dot dot-red"></span>En retard <span class="badge-retard">' + (minutes || 0) + ' min</span>';
     historiqueRetards.push(`${barge} – ${sens} – ${minutes || 0} min (${heure})`);
     localStorage.setItem("historique", JSON.stringify(historiqueRetards));
   }

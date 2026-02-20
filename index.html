@@ -117,7 +117,6 @@ button.primary {
   margin-left: 5px;
 }
 
-/* Pastilles officielles */
 .status-dot {
   display: inline-block;
   width: 10px;
@@ -170,8 +169,8 @@ button.primary {
 <option>Petite-Terre → Grande-Terre</option>
 </select>
 
-<label>Barges ou amphidromes</label>
-<select id="barges ou amphidromes" required>
+<label>Barge ou amphidrome</label>
+<select id="barge" required>
 <option value="">Sélectionner</option>
 <option>Polé</option>
 <option>Le Karihani</option>
@@ -204,36 +203,24 @@ button.primary {
 <!-- A PROPOS -->
 <div id="apropos" class="section hidden">
 <h2>À propos</h2>
-
 <p>
 Dzabarge Live est un service numérique indépendant visant à faciliter
 l'information des usagers concernant l'état des barges et amphidromes entre
 Grande-Terre et Petite-Terre à Mayotte.
 </p>
-
 <p>Les départs sont suivis dans les deux sens :</p>
-
 <ul>
 <li>Grande-Terre → Petite-Terre</li>
 <li>Petite-Terre → Grande-Terre</li>
 </ul>
-
-<p>
-Les informations sont issues de contributions collaboratives
-et sont strictement indicatives.
-</p>
-
+<p>Les informations sont issues de contributions collaboratives et sont strictement indicatives.</p>
 </div>
 
 <!-- MENTIONS -->
 <div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
 <p><strong>Éditeur :</strong> Nicolas SALVADOR</p>
-
-<p><strong>Contact :</strong> 
-<span id="email">Cliquez pour afficher l'adresse</span>
-</p>
-
+<p><strong>Contact :</strong> <span id="email">Cliquez pour afficher l'adresse</span></p>
 <p><strong>Hébergement :</strong> GitHub Pages – GitHub, Inc.</p>
 <p>Service numérique indépendant soumis au droit français.</p>
 </div>
@@ -246,6 +233,7 @@ Dzabarge Live © 2026 – Service numérique indépendant – Mayotte 🇾🇹
 
 <script>
 
+/* Navigation */
 function showSection(sectionId) {
   document.getElementById("accueil").classList.add("hidden");
   document.getElementById("apropos").classList.add("hidden");
@@ -253,6 +241,7 @@ function showSection(sectionId) {
   document.getElementById(sectionId).classList.remove("hidden");
 }
 
+/* Gestion retard */
 const radios = document.querySelectorAll('input[name="statut"]');
 const retardContainer = document.getElementById("retardContainer");
 
@@ -262,9 +251,36 @@ radios.forEach(radio => {
   });
 });
 
-let historiqueRetards = JSON.parse(localStorage.getItem("historique")) || [];
+/* Historique STABLE */
+let historiqueRetards = [];
+
+function chargerHistorique() {
+  const data = localStorage.getItem("historique");
+  historiqueRetards = data ? JSON.parse(data) : [];
+}
+
+function sauvegarderHistorique() {
+  localStorage.setItem("historique", JSON.stringify(historiqueRetards));
+}
+
+function afficherHistorique() {
+  const container = document.getElementById("historique");
+  container.innerHTML = "<h3>Historique des retards récents</h3>";
+
+  if (historiqueRetards.length === 0) {
+    container.innerHTML += "<div>Aucun retard enregistré.</div>";
+    return;
+  }
+
+  historiqueRetards.slice(-5).reverse().forEach(item => {
+    container.innerHTML += `<div>• ${item}</div>`;
+  });
+}
+
+chargerHistorique();
 afficherHistorique();
 
+/* Soumission formulaire */
 document.getElementById("bargeForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
@@ -285,7 +301,7 @@ document.getElementById("bargeForm").addEventListener("submit", function(e) {
   if (statut === "En retard") {
     affichageStatut = '<span class="status-dot dot-red"></span>En retard <span class="badge-retard">' + (minutes || 0) + ' min</span>';
     historiqueRetards.push(`${barge} – ${sens} – ${minutes || 0} min (${heure})`);
-    localStorage.setItem("historique", JSON.stringify(historiqueRetards));
+    sauvegarderHistorique();
   }
 
   document.getElementById("resultat").innerHTML =
@@ -297,40 +313,22 @@ ${heure}
 </div>`;
 
   afficherHistorique();
-  document.getElementById("bargeForm").reset();
+  this.reset();
   retardContainer.style.display = "none";
 });
 
-function afficherHistorique() {
-  const container = document.getElementById("historique");
-  container.innerHTML = "<h3>Historique des retards récents</h3>";
-
-  if (historiqueRetards.length === 0) {
-    container.innerHTML += "<div>Aucun retard enregistré.</div>";
-    return;
-  }
-
-  historiqueRetards.slice(-5).reverse().forEach(item => {
-    container.innerHTML += `<div>• ${item}</div>`;
-  });
-}
-
-/* Protection anti-bot email */
+/* Protection email anti-bot */
 (function() {
   let revealed = false;
-
   function revealEmail() {
     if (revealed) return;
-
     const user = ["n","s","a","l","v","a","d","o","r","9"].join("");
     const domain = ["i","k",".","m","e"].join("");
     const email = user + "@" + domain;
-
-    const container = document.getElementById("email");
-    container.innerHTML = '<a href="mailto:' + email + '">' + email + '</a>';
+    document.getElementById("email").innerHTML =
+      '<a href="mailto:' + email + '">' + email + '</a>';
     revealed = true;
   }
-
   document.addEventListener("mousemove", revealEmail, { once: true });
   document.addEventListener("touchstart", revealEmail, { once: true });
   document.getElementById("email").addEventListener("click", revealEmail);

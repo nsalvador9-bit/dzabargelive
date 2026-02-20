@@ -74,14 +74,9 @@ body {
   padding-bottom: 8px;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-label {
-  display: block;
-  margin-top: 10px;
-}
+label { display: block; margin-top: 10px; }
 
 select, textarea, input[type="number"] {
   width: 100%;
@@ -100,6 +95,22 @@ button.primary {
   font-weight: bold;
   margin-top: 15px;
   cursor: pointer;
+}
+
+.button-admin {
+  background: white;
+  border: 2px solid #003366;
+  color: #003366;
+  padding: 10px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.button-admin:hover {
+  background: #003366;
+  color: white;
 }
 
 .result {
@@ -173,7 +184,7 @@ button.primary {
 <select id="barge" required>
 <option value="">Sélectionner</option>
 <option>Polé</option>
-<option>Le Karihani</option>
+<option>Karihani</option>
 <option>Georges Nahouda</option>
 <option>Chatouilleuse</option>
 <option>Imane</option>
@@ -197,6 +208,10 @@ button.primary {
 
 <div id="resultat"></div>
 <div id="historique"></div>
+
+<button type="button" onclick="resetHistorique()" class="button-admin">
+Réinitialiser l’historique des retards
+</button>
 
 </div>
 
@@ -233,7 +248,6 @@ Dzabarge Live © 2026 – Service numérique indépendant – Mayotte 🇾🇹
 
 <script>
 
-/* Navigation */
 function showSection(sectionId) {
   document.getElementById("accueil").classList.add("hidden");
   document.getElementById("apropos").classList.add("hidden");
@@ -241,7 +255,6 @@ function showSection(sectionId) {
   document.getElementById(sectionId).classList.remove("hidden");
 }
 
-/* Gestion retard */
 const radios = document.querySelectorAll('input[name="statut"]');
 const retardContainer = document.getElementById("retardContainer");
 
@@ -251,7 +264,6 @@ radios.forEach(radio => {
   });
 });
 
-/* Historique STABLE */
 let historiqueRetards = [];
 
 function chargerHistorique() {
@@ -277,10 +289,17 @@ function afficherHistorique() {
   });
 }
 
+function resetHistorique() {
+  if (confirm("Voulez-vous vraiment supprimer l'historique des retards ?")) {
+    localStorage.removeItem("historique");
+    historiqueRetards = [];
+    afficherHistorique();
+  }
+}
+
 chargerHistorique();
 afficherHistorique();
 
-/* Soumission formulaire */
 document.getElementById("bargeForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
@@ -317,7 +336,7 @@ ${heure}
   retardContainer.style.display = "none";
 });
 
-/* Protection email anti-bot */
+/* Protection email */
 (function() {
   let revealed = false;
   function revealEmail() {

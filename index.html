@@ -59,22 +59,14 @@
     .logo{
       display:flex;
       align-items:center;
-      gap:10px;
-      font-weight:800;
-      color:var(--bleu-fonce);
-      font-size:1.15rem;
+      text-decoration:none;
+      flex-shrink:0;
     }
 
-    .logo-badge{
-      width:40px;
-      height:40px;
-      border-radius:12px;
-      background:linear-gradient(135deg,var(--bleu),var(--lagon));
-      display:grid;
-      place-items:center;
-      color:#fff;
-      box-shadow:var(--ombre);
-      font-size:1.2rem;
+    .logo img{
+      height:72px;
+      width:auto;
+      display:block;
     }
 
     .nav-links{
@@ -137,6 +129,16 @@
       grid-template-columns:1.15fr .85fr;
       align-items:center;
       gap:40px;
+    }
+
+    .hero-logo{
+      margin-bottom:18px;
+    }
+
+    .hero-logo img{
+      width:min(340px, 85%);
+      height:auto;
+      display:block;
     }
 
     .hero-badge{
@@ -597,6 +599,8 @@
       .phone{width:100%}
       .phone-screen{min-height:auto}
       .form-grid{grid-template-columns:1fr}
+      .logo img{height:56px}
+      .hero-logo img{width:min(260px, 82%)}
     }
   </style>
 </head>
@@ -605,8 +609,7 @@
   <header class="nav">
     <div class="container nav-inner">
       <a href="#top" class="logo">
-        <span class="logo-badge">🌊</span>
-        <span>Dzabarge Live</span>
+        <img src="logo-dzabarge.png" alt="Logo Dzabarge Live">
       </a>
 
       <nav class="nav-links">
@@ -622,6 +625,10 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
+          <div class="hero-logo">
+            <img src="logo-dzabarge.png" alt="Logo Dzabarge Live">
+          </div>
+
           <div class="hero-badge">📍 Mayotte • Grande-Terre ↔ Petite-Terre</div>
           <h1>Le suivi simple et rapide des barges et amphidromes à Mayotte</h1>
           <p>

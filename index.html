@@ -3,155 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dzabarge Live – Information sur les barges et amphidromes à Mayotte</title>
+<title>Dzabarge Live – Mayotte</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #f6f6f6;
-  color: #1c1c1c;
 }
 
-.navbar {
-  background: #003366;
-  padding: 14px;
-  text-align: center;
+/* PAGE D'ACCUEIL */
+#homeScreen {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: url('barge.jpg') center/cover no-repeat;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+  z-index:9999;
 }
 
-.navbar button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  margin: 0 20px;
-  cursor: pointer;
+.home-box {
+  background: rgba(0,0,0,0.5);
+  padding:30px;
 }
 
-.header {
-  background: white;
-  border-bottom: 4px solid #003366;
-  padding: 30px 20px;
-  text-align: center;
+.home-btn {
+  margin-top:20px;
+  padding:12px;
+  background:#003366;
+  color:white;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.logo {
-  width: 170px;
-  margin-bottom: 10px;
-}
+/* SITE */
+.navbar { background:#003366; padding:14px; text-align:center; }
+.navbar button { color:white; background:none; border:none; margin:0 20px; cursor:pointer; }
 
-.header h1 {
-  margin: 0;
-  font-size: 26px;
-  color: #003366;
-}
+.header { background:white; padding:20px; text-align:center; border-bottom:4px solid #003366; }
 
-.header p {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #555;
-}
+.container { max-width:900px; margin:30px auto; padding:20px; }
 
-.container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
+.section { background:white; padding:20px; margin-bottom:20px; border:1px solid #ddd; }
 
-.section {
-  background: white;
-  padding: 30px;
-  margin-bottom: 30px;
-  border: 1px solid #ddd;
-}
+.hidden { display:none; }
 
-.section h2 {
-  margin-top: 0;
-  font-size: 20px;
-  color: #003366;
-  border-bottom: 2px solid #003366;
-  padding-bottom: 8px;
-}
-
-.hidden { display: none; }
-
-label { display: block; margin-top: 10px; }
-
-select, textarea, input[type="number"] {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-button.primary {
-  background: #003366;
-  color: white;
-  padding: 12px;
-  border: none;
-  width: 100%;
-  font-weight: bold;
-  margin-top: 15px;
-  cursor: pointer;
-}
+button.primary { background:#003366; color:white; padding:10px; width:100%; border:none; margin-top:10px; }
 
 .button-admin {
-  background: white;
-  border: 2px solid #003366;
-  color: #003366;
-  padding: 10px;
-  width: 100%;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 15px;
+  background:white;
+  border:2px solid #003366;
+  color:#003366;
+  padding:10px;
+  width:100%;
+  margin-top:10px;
+  cursor:pointer;
 }
 
-.button-admin:hover {
-  background: #003366;
-  color: white;
-}
-
-.result {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #ccc;
-  background: #f9f9f9;
-}
+.status-dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
+.dot-green { background:#2e7d32; }
+.dot-grey { background:#757575; }
+.dot-red { background:#b00020; }
 
 .badge-retard {
-  background: #b00020;
-  color: white;
-  padding: 3px 7px;
-  font-size: 12px;
-  margin-left: 5px;
+  background:#b00020;
+  color:white;
+  padding:2px 6px;
+  font-size:12px;
 }
 
-.status-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.dot-green { background-color: #2e7d32; }
-.dot-grey  { background-color: #757575; }
-.dot-red   { background-color: #b00020; }
-
-.footer {
-  background: #003366;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  font-size: 13px;
-}
+.footer { background:#003366; color:white; text-align:center; padding:10px; }
 </style>
 </head>
 
 <body>
 
+<!-- ACCUEIL -->
+<div id="homeScreen">
+  <div class="home-box">
+    <h1>Dzabarge Live</h1>
+    <p>Suivi des barges à Mayotte 🇾🇹</p>
+    <button class="home-btn" onclick="enterSite()">Accéder au service</button>
+  </div>
+</div>
+
+<!-- NAV -->
 <div class="navbar">
 <button onclick="showSection('accueil')">Accueil</button>
 <button onclick="showSection('apropos')">À propos</button>
@@ -159,30 +102,26 @@ button.primary {
 </div>
 
 <div class="header">
-<img src="logo-dzabarge.png" class="logo">
 <h1>Dzabarge Live</h1>
-<p>Service d'information collaboratif sur les liaisons maritimes à Mayotte</p>
+<p>Service d'information maritime à Mayotte</p>
 </div>
 
 <div class="container">
 
-<!-- ACCUEIL -->
 <div id="accueil" class="section">
 
-<h2>État des départs des barges et amphidromes</h2>
+<h2>État des départs</h2>
 
 <form id="bargeForm">
 
-<label>Sens du départ</label>
-<select id="sens" required>
-<option value="">Sélectionner le sens</option>
+<label>Sens</label>
+<select id="sens">
 <option>Grande-Terre → Petite-Terre</option>
 <option>Petite-Terre → Grande-Terre</option>
 </select>
 
-<label>Barge ou amphidrome</label>
-<select id="barge" required>
-<option value="">Sélectionner</option>
+<label>Barge</label>
+<select id="barge">
 <option>Polé</option>
 <option>Karihani</option>
 <option>Georges Nahouda</option>
@@ -190,17 +129,13 @@ button.primary {
 <option>Imane</option>
 </select>
 
-<label><input type="radio" name="statut" value="À l'heure" required> À l’heure</label>
+<label><input type="radio" name="statut" value="À l'heure" checked> À l’heure</label>
 <label><input type="radio" name="statut" value="À vide"> À vide</label>
 <label><input type="radio" name="statut" value="En retard"> En retard</label>
 
 <div id="retardContainer" style="display:none;">
-<label>Nombre de minutes de retard</label>
-<input type="number" id="minutesRetard">
+<input type="number" id="minutesRetard" placeholder="minutes">
 </div>
-
-<label>Commentaire (facultatif)</label>
-<textarea id="commentaire" rows="3"></textarea>
 
 <button type="submit" class="primary">Publier</button>
 
@@ -209,148 +144,96 @@ button.primary {
 <div id="resultat"></div>
 <div id="historique"></div>
 
-<button type="button" onclick="resetHistorique()" class="button-admin">
-Réinitialiser l’historique des retards
-</button>
+<button class="button-admin" onclick="resetHistorique()">Réinitialiser l’historique</button>
 
 </div>
 
-<!-- A PROPOS -->
 <div id="apropos" class="section hidden">
 <h2>À propos</h2>
-<p>
-Dzabarge Live est un service numérique indépendant visant à faciliter
-l'information des usagers concernant l'état des barges et amphidromes entre
-Grande-Terre et Petite-Terre à Mayotte.
-</p>
-<p>Les départs sont suivis dans les deux sens :</p>
-<ul>
-<li>Grande-Terre → Petite-Terre</li>
-<li>Petite-Terre → Grande-Terre</li>
-</ul>
-<p>Les informations sont issues de contributions collaboratives et sont strictement indicatives.</p>
+<p>Service collaboratif de suivi des barges entre Grande-Terre et Petite-Terre.</p>
 </div>
 
-<!-- MENTIONS -->
 <div id="mentions" class="section hidden">
 <h2>Mentions légales</h2>
-<p><strong>Éditeur :</strong> Nicolas SALVADOR</p>
-<p><strong>Contact :</strong> <span id="email">Cliquez pour afficher l'adresse</span></p>
-<p><strong>Hébergement :</strong> GitHub Pages – GitHub, Inc.</p>
-<p>Service numérique indépendant soumis au droit français.</p>
+<p>Nicolas SALVADOR</p>
+<p><span id="email">Cliquez pour afficher</span></p>
 </div>
 
 </div>
 
-<div class="footer">
-Dzabarge Live © 2026 – Service numérique indépendant – Mayotte 🇾🇹
-</div>
+<div class="footer">Dzabarge Live © 2026</div>
 
 <script>
 
-function showSection(sectionId) {
-  document.getElementById("accueil").classList.add("hidden");
-  document.getElementById("apropos").classList.add("hidden");
-  document.getElementById("mentions").classList.add("hidden");
-  document.getElementById(sectionId).classList.remove("hidden");
+function enterSite(){
+  document.getElementById("homeScreen").style.display="none";
 }
 
-const radios = document.querySelectorAll('input[name="statut"]');
-const retardContainer = document.getElementById("retardContainer");
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
 
-radios.forEach(radio => {
-  radio.addEventListener("change", function() {
-    retardContainer.style.display = this.value === "En retard" ? "block" : "none";
+document.querySelectorAll('input[name="statut"]').forEach(r=>{
+  r.addEventListener('change',()=>{
+    document.getElementById("retardContainer").style.display = r.value==="En retard" ? "block":"none";
   });
 });
 
-let historiqueRetards = [];
+let historique = JSON.parse(localStorage.getItem("historique")) || [];
 
-function chargerHistorique() {
-  const data = localStorage.getItem("historique");
-  historiqueRetards = data ? JSON.parse(data) : [];
-}
-
-function sauvegarderHistorique() {
-  localStorage.setItem("historique", JSON.stringify(historiqueRetards));
-}
-
-function afficherHistorique() {
-  const container = document.getElementById("historique");
-  container.innerHTML = "<h3>Historique des retards récents</h3>";
-
-  if (historiqueRetards.length === 0) {
-    container.innerHTML += "<div>Aucun retard enregistré.</div>";
-    return;
-  }
-
-  historiqueRetards.slice(-5).reverse().forEach(item => {
-    container.innerHTML += `<div>• ${item}</div>`;
+function afficherHistorique(){
+  let h = document.getElementById("historique");
+  h.innerHTML = "<h3>Historique</h3>";
+  historique.slice(-5).reverse().forEach(e=>{
+    h.innerHTML += `<div>• ${e}</div>`;
   });
 }
 
-function resetHistorique() {
-  if (confirm("Voulez-vous vraiment supprimer l'historique des retards ?")) {
+function resetHistorique(){
+  if(confirm("Supprimer l’historique ?")){
     localStorage.removeItem("historique");
-    historiqueRetards = [];
+    historique=[];
     afficherHistorique();
   }
 }
 
-chargerHistorique();
 afficherHistorique();
 
-document.getElementById("bargeForm").addEventListener("submit", function(e) {
+document.getElementById("bargeForm").addEventListener("submit",e=>{
   e.preventDefault();
 
-  const barge = document.getElementById("barge").value;
-  const sens = document.getElementById("sens").value;
-  const statut = document.querySelector('input[name="statut"]:checked').value;
-  const minutes = document.getElementById("minutesRetard").value;
-  const heure = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  let barge = document.getElementById("barge").value;
+  let sens = document.getElementById("sens").value;
+  let statut = document.querySelector('input[name="statut"]:checked').value;
+  let min = document.getElementById("minutesRetard").value;
+  let heure = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
 
-  let affichageStatut;
+  let txt;
 
-  if (statut === "À l'heure")
-    affichageStatut = '<span class="status-dot dot-green"></span>À l’heure';
-
-  if (statut === "À vide")
-    affichageStatut = '<span class="status-dot dot-grey"></span>À vide';
-
-  if (statut === "En retard") {
-    affichageStatut = '<span class="status-dot dot-red"></span>En retard <span class="badge-retard">' + (minutes || 0) + ' min</span>';
-    historiqueRetards.push(`${barge} – ${sens} – ${minutes || 0} min (${heure})`);
-    sauvegarderHistorique();
+  if(statut==="À l'heure") txt='<span class="status-dot dot-green"></span>À l’heure';
+  if(statut==="À vide") txt='<span class="status-dot dot-grey"></span>À vide';
+  if(statut==="En retard"){
+    txt='<span class="status-dot dot-red"></span>En retard <span class="badge-retard">'+(min||0)+' min</span>';
+    historique.push(`${barge} – ${sens} – ${min||0} min (${heure})`);
+    localStorage.setItem("historique",JSON.stringify(historique));
   }
 
   document.getElementById("resultat").innerHTML =
-  `<div class="result">
-<strong>${barge}</strong><br>
-${sens}<br>
-${affichageStatut}<br>
-${heure}
-</div>`;
+  `<div><b>${barge}</b><br>${sens}<br>${txt}<br>${heure}</div>`;
 
   afficherHistorique();
-  this.reset();
-  retardContainer.style.display = "none";
 });
 
-/* Protection email */
-(function() {
-  let revealed = false;
-  function revealEmail() {
-    if (revealed) return;
-    const user = ["n","s","a","l","v","a","d","o","r","9"].join("");
-    const domain = ["i","k",".","m","e"].join("");
-    const email = user + "@" + domain;
-    document.getElementById("email").innerHTML =
-      '<a href="mailto:' + email + '">' + email + '</a>';
-    revealed = true;
+(function(){
+  let shown=false;
+  function show(){
+    if(shown)return;
+    let email="nsalvador9"+"@"+"ik.me";
+    document.getElementById("email").innerHTML='<a href="mailto:'+email+'">'+email+'</a>';
+    shown=true;
   }
-  document.addEventListener("mousemove", revealEmail, { once: true });
-  document.addEventListener("touchstart", revealEmail, { once: true });
-  document.getElementById("email").addEventListener("click", revealEmail);
+  document.addEventListener("click",show,{once:true});
 })();
 
 </script>

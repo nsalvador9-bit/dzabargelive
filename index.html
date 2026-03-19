@@ -5,534 +5,606 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dzabarge Live – Suivi des barges et amphidromes à Mayotte</title>
   <meta name="description" content="Dzabarge Live : suivez les barges et amphidromes entre Grande-Terre et Petite-Terre à Mayotte. Informations collaboratives en temps réel." />
+
   <style>
-    :root {
-      --bleu: #0b5ed7;
-      --bleu-fonce: #083b8a;
-      --lagon: #11b7c9;
-      --fond: #f5f9ff;
-      --blanc: #ffffff;
-      --texte: #1f2937;
-      --texte-clair: #6b7280;
-      --vert: #1e9e61;
-      --orange: #f59e0b;
-      --rouge: #dc2626;
-      --ombre: 0 10px 25px rgba(0, 0, 0, 0.08);
-      --rayon: 18px;
-      --max: 1200px;
+    :root{
+      --bleu:#0b5ed7;
+      --bleu-fonce:#083b8a;
+      --lagon:#11b7c9;
+      --fond:#f5f9ff;
+      --blanc:#ffffff;
+      --texte:#1f2937;
+      --texte-clair:#6b7280;
+      --vert:#1e9e61;
+      --orange:#f59e0b;
+      --rouge:#dc2626;
+      --gris:#e5e7eb;
+      --gris-fonce:#94a3b8;
+      --ombre:0 10px 25px rgba(0,0,0,.08);
+      --rayon:18px;
+      --max:1200px;
     }
 
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:var(--fond);
+      color:var(--texte);
+      line-height:1.6;
     }
 
-    html {
-      scroll-behavior: smooth;
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
+    .container{width:min(92%, var(--max));margin:0 auto}
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(0,0,0,.06);
     }
 
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--fond);
-      color: var(--texte);
-      line-height: 1.6;
+    .nav-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      padding:14px 0;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:800;
+      color:var(--bleu-fonce);
+      font-size:1.15rem;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
+    .logo-badge{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      background:linear-gradient(135deg,var(--bleu),var(--lagon));
+      display:grid;
+      place-items:center;
+      color:#fff;
+      box-shadow:var(--ombre);
+      font-size:1.2rem;
     }
 
-    .container {
-      width: min(92%, var(--max));
-      margin: 0 auto;
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
     }
 
-    /* NAV */
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+    .nav-links a{
+      font-weight:600;
+      font-size:.95rem;
     }
 
-    .nav-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      gap: 20px;
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 18px;
+      border:none;
+      border-radius:999px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.2s ease;
+      font-size:.95rem;
     }
 
-    .logo {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--bleu-fonce);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--bleu),var(--lagon));
+      color:#fff;
+      box-shadow:var(--ombre);
     }
 
-    .logo-badge {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--bleu), var(--lagon));
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 1.2rem;
-      box-shadow: var(--ombre);
+    .btn-secondary{
+      background:#fff;
+      color:var(--bleu-fonce);
+      border:1px solid rgba(11,94,215,.14);
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex-wrap: wrap;
+    .btn-danger{
+      background:#fff;
+      color:var(--rouge);
+      border:1px solid rgba(220,38,38,.15);
     }
 
-    .nav-links a {
-      color: var(--texte);
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      transition: 0.2s ease;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--bleu), var(--lagon));
-      color: white;
-      box-shadow: var(--ombre);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--bleu-fonce);
-      border: 1px solid rgba(11,94,215,0.15);
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-2px);
-    }
-
-    /* HERO */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 70px 0 50px;
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:70px 0 50px;
       background:
-        radial-gradient(circle at top left, rgba(17,183,201,0.18), transparent 35%),
-        radial-gradient(circle at bottom right, rgba(11,94,215,0.18), transparent 35%),
-        linear-gradient(180deg, #eef7ff 0%, #f8fbff 100%);
+        radial-gradient(circle at top left, rgba(17,183,201,.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(11,94,215,.18), transparent 35%),
+        linear-gradient(180deg,#eef7ff 0%,#f8fbff 100%);
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      align-items: center;
-      gap: 40px;
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      align-items:center;
+      gap:40px;
     }
 
-    .hero-badge {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(17,183,201,0.12);
-      color: var(--bleu-fonce);
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 18px;
+    .hero-badge{
+      display:inline-block;
+      padding:8px 14px;
+      border-radius:999px;
+      background:rgba(17,183,201,.12);
+      color:var(--bleu-fonce);
+      font-weight:700;
+      font-size:.9rem;
+      margin-bottom:18px;
     }
 
-    .hero h1 {
-      margin: 0 0 16px;
-      font-size: clamp(2.1rem, 4.3vw, 4.2rem);
-      line-height: 1.08;
-      color: var(--bleu-fonce);
+    .hero h1{
+      margin:0 0 16px;
+      font-size:clamp(2.1rem,4.3vw,4.2rem);
+      line-height:1.08;
+      color:var(--bleu-fonce);
     }
 
-    .hero p {
-      font-size: 1.08rem;
-      color: var(--texte-clair);
-      max-width: 680px;
-      margin-bottom: 26px;
+    .hero p{
+      font-size:1.08rem;
+      color:var(--texte-clair);
+      max-width:680px;
+      margin-bottom:26px;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:28px;
     }
 
-    .hero-stats {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
+    .hero-stats{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
     }
 
-    .stat {
-      background: rgba(255,255,255,0.8);
-      border: 1px solid rgba(0,0,0,0.05);
-      padding: 14px 16px;
-      border-radius: 16px;
-      min-width: 150px;
-      box-shadow: var(--ombre);
+    .stat{
+      background:rgba(255,255,255,.84);
+      border:1px solid rgba(0,0,0,.05);
+      padding:14px 16px;
+      border-radius:16px;
+      min-width:150px;
+      box-shadow:var(--ombre);
     }
 
-    .stat strong {
-      display: block;
-      font-size: 1.2rem;
-      color: var(--bleu-fonce);
+    .stat strong{
+      display:block;
+      font-size:1.2rem;
+      color:var(--bleu-fonce);
     }
 
-    .stat span {
-      color: var(--texte-clair);
-      font-size: 0.92rem;
+    .stat span{
+      color:var(--texte-clair);
+      font-size:.92rem;
     }
 
-    /* PHONE CARD */
-    .phone-wrap {
-      display: flex;
-      justify-content: center;
+    .phone-wrap{display:flex;justify-content:center}
+    .phone{
+      width:320px;
+      max-width:100%;
+      background:#0f172a;
+      border-radius:32px;
+      padding:14px;
+      box-shadow:0 20px 50px rgba(11,94,215,.18);
+      border:3px solid #111827;
     }
 
-    .phone {
-      width: 320px;
-      max-width: 100%;
-      background: #0f172a;
-      border-radius: 32px;
-      padding: 14px;
-      box-shadow: 0 20px 50px rgba(11, 94, 215, 0.18);
-      border: 3px solid #111827;
+    .phone-screen{
+      background:linear-gradient(180deg,#f8fbff 0%,#eef7ff 100%);
+      border-radius:24px;
+      padding:18px;
+      min-height:590px;
+      overflow:hidden;
     }
 
-    .phone-screen {
-      background: linear-gradient(180deg, #f8fbff 0%, #eef7ff 100%);
-      border-radius: 24px;
-      padding: 18px;
-      min-height: 590px;
-      position: relative;
-      overflow: hidden;
+    .phone-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+      font-size:.86rem;
+      color:#111827;
+      font-weight:700;
     }
 
-    .phone-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      font-size: 0.86rem;
-      color: #111827;
-      font-weight: 700;
+    .mini-card{
+      background:#fff;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:var(--ombre);
+      margin-bottom:14px;
+      border:1px solid rgba(0,0,0,.05);
     }
 
-    .mini-card {
-      background: white;
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: var(--ombre);
-      margin-bottom: 14px;
-      border: 1px solid rgba(0,0,0,0.05);
+    .mini-title{
+      font-weight:800;
+      color:var(--bleu-fonce);
+      margin-bottom:10px;
     }
 
-    .mini-title {
-      font-weight: 800;
-      color: var(--bleu-fonce);
-      margin-bottom: 10px;
+    .status-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(0,0,0,.06);
     }
 
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
+    .status-row:last-child{border-bottom:none}
+    .route{font-weight:700;font-size:.95rem}
+
+    .status{
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      white-space:nowrap;
     }
 
-    .status-row:last-child {
-      border-bottom: none;
+    .heure{background:rgba(30,158,97,.14);color:var(--vert)}
+    .retard{background:rgba(245,158,11,.14);color:#b45309}
+    .vide{background:rgba(220,38,38,.12);color:var(--rouge)}
+
+    section{padding:70px 0}
+    .section-head{
+      text-align:center;
+      max-width:760px;
+      margin:0 auto 40px;
     }
 
-    .route {
-      font-weight: 700;
-      font-size: 0.95rem;
+    .section-head h2{
+      margin:0 0 12px;
+      font-size:clamp(1.8rem,3vw,2.8rem);
+      color:var(--bleu-fonce);
     }
 
-    .status {
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 800;
-      white-space: nowrap;
+    .section-head p{
+      margin:0;
+      color:var(--texte-clair);
+      font-size:1.02rem;
     }
 
-    .heure {
-      background: rgba(30,158,97,0.14);
-      color: var(--vert);
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
     }
 
-    .retard {
-      background: rgba(245,158,11,0.14);
-      color: #b45309;
+    .card{
+      background:#fff;
+      border-radius:var(--rayon);
+      padding:24px;
+      box-shadow:var(--ombre);
+      border:1px solid rgba(0,0,0,.05);
     }
 
-    .vide {
-      background: rgba(220,38,38,0.12);
-      color: var(--rouge);
+    .card-icon{
+      width:54px;
+      height:54px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-size:1.4rem;
+      color:#fff;
+      margin-bottom:16px;
+      background:linear-gradient(135deg,var(--bleu),var(--lagon));
     }
 
-    /* SECTIONS */
-    section {
-      padding: 70px 0;
+    .card h3{
+      margin:0 0 10px;
+      color:var(--bleu-fonce);
+      font-size:1.15rem;
     }
 
-    .section-head {
-      text-align: center;
-      max-width: 760px;
-      margin: 0 auto 40px;
+    .card p{
+      margin:0;
+      color:var(--texte-clair);
     }
 
-    .section-head h2 {
-      margin: 0 0 12px;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      color: var(--bleu-fonce);
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
     }
 
-    .section-head p {
-      margin: 0;
-      color: var(--texte-clair);
-      font-size: 1.02rem;
+    .step{
+      background:#fff;
+      border-radius:var(--rayon);
+      padding:24px;
+      box-shadow:var(--ombre);
+      border:1px solid rgba(0,0,0,.05);
     }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+    .step-number{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--bleu),var(--lagon));
+      color:#fff;
+      font-weight:800;
+      margin-bottom:16px;
     }
 
-    .card {
-      background: white;
-      border-radius: var(--rayon);
-      padding: 24px;
-      box-shadow: var(--ombre);
-      border: 1px solid rgba(0,0,0,0.05);
+    .step h3{
+      margin:0 0 10px;
+      color:var(--bleu-fonce);
     }
 
-    .card-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 1.4rem;
-      color: white;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, var(--bleu), var(--lagon));
+    .step p{
+      margin:0;
+      color:var(--texte-clair);
     }
 
-    .card h3 {
-      margin: 0 0 10px;
-      color: var(--bleu-fonce);
-      font-size: 1.15rem;
+    .tracking-section{
+      background:linear-gradient(180deg,#f7fbff 0%, #eef6ff 100%);
+      border-top:1px solid rgba(0,0,0,.04);
+      border-bottom:1px solid rgba(0,0,0,.04);
     }
 
-    .card p {
-      margin: 0;
-      color: var(--texte-clair);
+    .tracking-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      align-items:start;
     }
 
-    /* HOW IT WORKS */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
+    .panel{
+      background:#fff;
+      border-radius:24px;
+      box-shadow:var(--ombre);
+      padding:24px;
+      border:1px solid rgba(0,0,0,.05);
     }
 
-    .step {
-      background: white;
-      border-radius: var(--rayon);
-      padding: 24px;
-      box-shadow: var(--ombre);
-      position: relative;
-      border: 1px solid rgba(0,0,0,0.05);
+    .panel h3{
+      margin:0 0 16px;
+      color:var(--bleu-fonce);
+      font-size:1.25rem;
     }
 
-    .step-number {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--bleu), var(--lagon));
-      color: white;
-      font-weight: 800;
-      margin-bottom: 16px;
+    .info-box{
+      background:#eef7ff;
+      border:1px solid rgba(11,94,215,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      color:var(--texte-clair);
+      font-size:.95rem;
+      margin-bottom:18px;
     }
 
-    .step h3 {
-      margin: 0 0 10px;
-      color: var(--bleu-fonce);
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
     }
 
-    .step p {
-      margin: 0;
-      color: var(--texte-clair);
+    .full{grid-column:1 / -1}
+
+    label{
+      display:block;
+      font-size:.92rem;
+      font-weight:700;
+      margin-bottom:7px;
+      color:var(--texte);
     }
 
-    /* CTA */
-    .cta {
-      padding: 0 0 80px;
+    select,input,textarea{
+      width:100%;
+      border:1px solid #dbe3ef;
+      border-radius:14px;
+      padding:13px 14px;
+      font:inherit;
+      background:#fff;
+      color:var(--texte);
+      outline:none;
+      transition:border-color .2s ease, box-shadow .2s ease;
     }
 
-    .cta-box {
-      background: linear-gradient(135deg, var(--bleu-fonce), var(--bleu), var(--lagon));
-      color: white;
-      border-radius: 28px;
-      padding: 36px 28px;
-      text-align: center;
-      box-shadow: var(--ombre);
+    select:focus,input:focus,textarea:focus{
+      border-color:rgba(11,94,215,.35);
+      box-shadow:0 0 0 4px rgba(11,94,215,.08);
     }
 
-    .cta-box h2 {
-      margin: 0 0 10px;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
+    textarea{
+      resize:vertical;
+      min-height:100px;
     }
 
-    .cta-box p {
-      margin: 0 auto 22px;
-      max-width: 720px;
-      opacity: 0.95;
+    .action-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:8px;
     }
 
-    .cta-actions {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
+    .feed{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
 
-    .cta .btn-secondary {
-      color: white;
-      border-color: rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.12);
+    .feed-empty{
+      background:#f8fafc;
+      border:1px dashed #cbd5e1;
+      color:var(--texte-clair);
+      padding:20px;
+      border-radius:16px;
+      text-align:center;
     }
 
-    /* FOOTER */
-    footer {
-      background: #0f172a;
-      color: rgba(255,255,255,0.88);
-      padding: 28px 0;
+    .alert-card{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.05);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:var(--ombre);
     }
 
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
+    .alert-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
     }
 
-    .footer-links {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
+    .alert-route{
+      font-weight:800;
+      color:var(--bleu-fonce);
+      font-size:1rem;
     }
 
-    .footer-links a {
-      color: rgba(255,255,255,0.88);
-      font-weight: 600;
+    .alert-meta{
+      color:var(--texte-clair);
+      font-size:.88rem;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 980px) {
+    .alert-comment{
+      margin-top:10px;
+      color:var(--texte);
+      background:#f8fafc;
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:.95rem;
+    }
+
+    .history-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .small-note{
+      font-size:.85rem;
+      color:var(--texte-clair);
+    }
+
+    .cta{
+      padding:0 0 80px;
+    }
+
+    .cta-box{
+      background:linear-gradient(135deg,var(--bleu-fonce),var(--bleu),var(--lagon));
+      color:#fff;
+      border-radius:28px;
+      padding:36px 28px;
+      text-align:center;
+      box-shadow:var(--ombre);
+    }
+
+    .cta-box h2{
+      margin:0 0 10px;
+      font-size:clamp(1.8rem,3vw,2.6rem);
+    }
+
+    .cta-box p{
+      margin:0 auto 22px;
+      max-width:720px;
+      opacity:.95;
+    }
+
+    .cta-actions{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .cta .btn-secondary{
+      color:#fff;
+      border-color:rgba(255,255,255,.25);
+      background:rgba(255,255,255,.12);
+    }
+
+    footer{
+      background:#0f172a;
+      color:rgba(255,255,255,.88);
+      padding:28px 0;
+    }
+
+    .footer-inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .footer-links a{
+      color:rgba(255,255,255,.88);
+      font-weight:600;
+    }
+
+    @media (max-width:980px){
       .hero-grid,
       .cards,
-      .steps {
-        grid-template-columns: 1fr;
+      .steps,
+      .tracking-grid{
+        grid-template-columns:1fr;
       }
 
-      .hero {
-        padding-top: 45px;
+      .hero{padding-top:45px}
+      .hero-grid{gap:26px}
+      .phone-wrap{order:-1}
+      .nav-inner{
+        flex-direction:column;
+        align-items:flex-start;
       }
-
-      .hero-grid {
-        gap: 26px;
-      }
-
-      .phone-wrap {
-        order: -1;
-      }
-
-      .nav-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        width: 100%;
-      }
+      .nav-links{width:100%}
     }
 
-    @media (max-width: 640px) {
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-
-      .hero p {
-        font-size: 1rem;
-      }
-
-      .btn {
-        width: 100%;
-      }
-
+    @media (max-width:640px){
+      .hero h1{font-size:2.2rem}
+      .hero p{font-size:1rem}
+      .btn{width:100%}
       .hero-actions,
-      .cta-actions {
-        flex-direction: column;
+      .cta-actions,
+      .action-row{
+        flex-direction:column;
       }
-
-      .stat {
-        width: 100%;
-      }
-
-      .phone {
-        width: 100%;
-      }
-
-      .phone-screen {
-        min-height: auto;
-      }
+      .stat{width:100%}
+      .phone{width:100%}
+      .phone-screen{min-height:auto}
+      .form-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
-<body>
+<body id="top">
 
   <header class="nav">
     <div class="container nav-inner">
-      <a href="#" class="logo">
+      <a href="#top" class="logo">
         <span class="logo-badge">🌊</span>
         <span>Dzabarge Live</span>
       </a>
@@ -584,11 +656,11 @@
             <div class="phone-screen">
               <div class="phone-top">
                 <span>Dzabarge Live</span>
-                <span>17:45</span>
+                <span id="phoneTime">17:45</span>
               </div>
 
               <div class="mini-card">
-                <div class="mini-title">Départs récents</div>
+                <div class="mini-title">Exemples de statuts</div>
 
                 <div class="status-row">
                   <div>
@@ -645,25 +717,19 @@
           <div class="card">
             <div class="card-icon">⏱️</div>
             <h3>Gain de temps</h3>
-            <p>
-              Consulte rapidement l’état des départs avant de te rendre à l’embarcadère.
-            </p>
+            <p>Consulte rapidement l’état des départs avant de te rendre à l’embarcadère.</p>
           </div>
 
           <div class="card">
             <div class="card-icon">📲</div>
             <h3>Accès mobile</h3>
-            <p>
-              Une interface simple, lisible et pratique sur iPhone, Android et ordinateur.
-            </p>
+            <p>Une interface simple, lisible et pratique sur iPhone, Android et ordinateur.</p>
           </div>
 
           <div class="card">
             <div class="card-icon">🤝</div>
             <h3>Collaboratif</h3>
-            <p>
-              Les informations publiées par les utilisateurs permettent à toute la communauté de mieux s’organiser.
-            </p>
+            <p>Les informations publiées par les utilisateurs permettent à toute la communauté de mieux s’organiser.</p>
           </div>
         </div>
       </div>
@@ -673,34 +739,26 @@
       <div class="container">
         <div class="section-head">
           <h2>Comment ça fonctionne ?</h2>
-          <p>
-            En quelques secondes, tu peux consulter ou signaler l’état d’un départ.
-          </p>
+          <p>En quelques secondes, tu peux consulter ou signaler l’état d’un départ.</p>
         </div>
 
         <div class="steps">
           <div class="step">
             <div class="step-number">1</div>
             <h3>Choisis le sens</h3>
-            <p>
-              Sélectionne le trajet : Grande-Terre → Petite-Terre ou Petite-Terre → Grande-Terre.
-            </p>
+            <p>Sélectionne le trajet : Grande-Terre → Petite-Terre ou Petite-Terre → Grande-Terre.</p>
           </div>
 
           <div class="step">
             <div class="step-number">2</div>
             <h3>Vérifie le bateau</h3>
-            <p>
-              Consulte l’état d’une barge ou d’un amphidrome : Karihani, Polé, Georges Nahouda, Chatouilleuse ou Imane.
-            </p>
+            <p>Consulte l’état d’une barge ou d’un amphidrome : Karihani, Polé, Georges Nahouda, Chatouilleuse ou Imane.</p>
           </div>
 
           <div class="step">
             <div class="step-number">3</div>
             <h3>Publie l’information</h3>
-            <p>
-              Partage un statut simple : à l’heure, en retard, ou à vide, avec un commentaire si besoin.
-            </p>
+            <p>Partage un statut simple : à l’heure, en retard, ou à vide, avec un commentaire si besoin.</p>
           </div>
         </div>
       </div>
@@ -710,49 +768,122 @@
       <div class="container">
         <div class="section-head">
           <h2>À propos de Dzabarge Live</h2>
-          <p>
-            Dzabarge Live est un service numérique indépendant destiné à rendre l’information maritime plus accessible à Mayotte.
-          </p>
+          <p>Dzabarge Live est un service numérique indépendant destiné à rendre l’information maritime plus accessible à Mayotte.</p>
         </div>
 
         <div class="cards">
           <div class="card">
             <div class="card-icon">🌍</div>
             <h3>Local et utile</h3>
-            <p>
-              Le site répond à un besoin concret du territoire : mieux informer sur les déplacements entre les deux rives.
-            </p>
+            <p>Le site répond à un besoin concret du territoire : mieux informer sur les déplacements entre les deux rives.</p>
           </div>
 
           <div class="card">
             <div class="card-icon">🛟</div>
             <h3>Indicatif</h3>
-            <p>
-              Les informations affichées sont collaboratives et données à titre indicatif. Elles ne remplacent pas une communication officielle.
-            </p>
+            <p>Les informations affichées sont collaboratives et données à titre indicatif. Elles ne remplacent pas une communication officielle.</p>
           </div>
 
           <div class="card">
             <div class="card-icon">💡</div>
             <h3>Simple et évolutif</h3>
-            <p>
-              Le service peut évoluer avec de nouvelles fonctionnalités : historique, alertes, statistiques et meilleure expérience mobile.
-            </p>
+            <p>Le service peut évoluer avec de nouvelles fonctionnalités : historique, alertes, statistiques et meilleure expérience mobile.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta" id="suivi">
+    <section class="tracking-section" id="suivi">
+      <div class="container">
+        <div class="section-head">
+          <h2>Suivi en direct</h2>
+          <p>Ajoute une information rapidement et consulte l’historique des derniers signalements sur ton appareil.</p>
+        </div>
+
+        <div class="tracking-grid">
+          <div class="panel">
+            <h3>Publier un signalement</h3>
+
+            <div class="info-box">
+              ℹ️ Cette version GitHub Pages enregistre les signalements dans le navigateur de l’appareil. Pour un vrai partage en direct entre tous les utilisateurs, il faudra connecter Firebase.
+            </div>
+
+            <form id="alertForm">
+              <div class="form-grid">
+                <div>
+                  <label for="boat">Bateau</label>
+                  <select id="boat" required>
+                    <option value="">Choisir un bateau</option>
+                    <option>Karihani</option>
+                    <option>Polé</option>
+                    <option>Georges Nahouda</option>
+                    <option>Chatouilleuse</option>
+                    <option>Imane</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="direction">Trajet</label>
+                  <select id="direction" required>
+                    <option value="">Choisir un trajet</option>
+                    <option>Grande-Terre → Petite-Terre</option>
+                    <option>Petite-Terre → Grande-Terre</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="status">Statut</label>
+                  <select id="status" required>
+                    <option value="">Choisir un statut</option>
+                    <option value="À l’heure">À l’heure</option>
+                    <option value="En retard">En retard</option>
+                    <option value="À vide">À vide</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="delay">Retard (minutes)</label>
+                  <input id="delay" type="number" min="0" placeholder="Ex : 10" />
+                </div>
+
+                <div class="full">
+                  <label for="comment">Commentaire</label>
+                  <textarea id="comment" placeholder="Ex : Beaucoup de monde / embarquement rapide / départ prévu dans 5 min..."></textarea>
+                </div>
+              </div>
+
+              <div class="action-row">
+                <button type="submit" class="btn btn-primary">📤 Publier le signalement</button>
+                <button type="reset" class="btn btn-secondary">↺ Réinitialiser le formulaire</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="history-head">
+              <div>
+                <h3 style="margin:0;">Historique des signalements</h3>
+                <div class="small-note">Les plus récents apparaissent en premier.</div>
+              </div>
+              <button id="clearHistoryBtn" class="btn btn-danger">🗑️ Effacer l’historique</button>
+            </div>
+
+            <div id="alertsFeed" class="feed"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
       <div class="container">
         <div class="cta-box">
-          <h2>Prêt à consulter les départs ?</h2>
+          <h2>Dzabarge Live continue d’évoluer</h2>
           <p>
-            Accède directement au suivi des barges et amphidromes pour voir l’état des liaisons maritimes à Mayotte.
+            Cette base est idéale pour GitHub Pages. Tu pourras ensuite ajouter le vrai temps réel, les notifications et une carte si tu veux aller plus loin.
           </p>
           <div class="cta-actions">
-            <a href="https://dzabargelive.store" class="btn btn-secondary">🌊 Ouvrir le suivi Dzabarge Live</a>
             <a href="#top" class="btn btn-secondary">⬆️ Retour en haut</a>
+            <a href="#suivi" class="btn btn-secondary">🚢 Aller au suivi</a>
           </div>
         </div>
       </div>
@@ -767,12 +898,162 @@
       </div>
 
       <div class="footer-links">
-        <a href="#">Accueil</a>
+        <a href="#top">Accueil</a>
         <a href="#apropos">À propos</a>
-        <a href="#">Mentions légales</a>
+        <a href="#suivi">Suivi</a>
       </div>
     </div>
   </footer>
 
+  <script>
+    const STORAGE_KEY = "dzabarge_live_alerts";
+
+    const form = document.getElementById("alertForm");
+    const feed = document.getElementById("alertsFeed");
+    const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+    const delayInput = document.getElementById("delay");
+    const statusSelect = document.getElementById("status");
+    const phoneTime = document.getElementById("phoneTime");
+
+    function updatePhoneTime() {
+      const now = new Date();
+      phoneTime.textContent = now.toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    updatePhoneTime();
+    setInterval(updatePhoneTime, 1000);
+
+    function getAlerts() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveAlerts(alerts) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(alerts));
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getStatusBadge(status, delay) {
+      if (status === "À l’heure") {
+        return '<span class="status heure">À l’heure</span>';
+      }
+      if (status === "À vide") {
+        return '<span class="status vide">À vide</span>';
+      }
+      if (status === "En retard") {
+        const d = Number(delay);
+        return '<span class="status retard">+' + (Number.isFinite(d) && d > 0 ? d : 0) + ' min</span>';
+      }
+      return '<span class="status">Statut</span>';
+    }
+
+    function formatDate(dateIso) {
+      const date = new Date(dateIso);
+      return date.toLocaleString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function renderAlerts() {
+      const alerts = getAlerts();
+
+      if (!alerts.length) {
+        feed.innerHTML = `
+          <div class="feed-empty">
+            Aucun signalement pour le moment.<br>
+            Publie une première information depuis le formulaire.
+          </div>
+        `;
+        return;
+      }
+
+      feed.innerHTML = alerts.map(alert => `
+        <div class="alert-card">
+          <div class="alert-top">
+            <div>
+              <div class="alert-route">${escapeHtml(alert.boat)}</div>
+              <div class="alert-meta">
+                ${escapeHtml(alert.direction)} • ${formatDate(alert.createdAt)}
+              </div>
+            </div>
+            ${getStatusBadge(alert.status, alert.delay)}
+          </div>
+          ${alert.comment ? `<div class="alert-comment">${escapeHtml(alert.comment)}</div>` : ""}
+        </div>
+      `).join("");
+    }
+
+    statusSelect.addEventListener("change", () => {
+      if (statusSelect.value !== "En retard") {
+        delayInput.value = "";
+      }
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const boat = document.getElementById("boat").value.trim();
+      const direction = document.getElementById("direction").value.trim();
+      const status = document.getElementById("status").value.trim();
+      const delay = document.getElementById("delay").value.trim();
+      const comment = document.getElementById("comment").value.trim();
+
+      if (!boat || !direction || !status) {
+        alert("Merci de remplir les champs obligatoires.");
+        return;
+      }
+
+      if (status === "En retard" && delay !== "" && Number(delay) < 0) {
+        alert("Le retard ne peut pas être négatif.");
+        return;
+      }
+
+      const newAlert = {
+        id: Date.now(),
+        boat,
+        direction,
+        status,
+        delay: status === "En retard" ? (delay || "0") : "",
+        comment,
+        createdAt: new Date().toISOString()
+      };
+
+      const alerts = getAlerts();
+      alerts.unshift(newAlert);
+      saveAlerts(alerts);
+      renderAlerts();
+      form.reset();
+
+      alert("Signalement publié avec succès.");
+    });
+
+    clearHistoryBtn.addEventListener("click", () => {
+      const ok = confirm("Veux-tu vraiment effacer tout l’historique des signalements sur cet appareil ?");
+      if (!ok) return;
+
+      localStorage.removeItem(STORAGE_KEY);
+      renderAlerts();
+    });
+
+    renderAlerts();
+  </script>
 </body>
 </html>

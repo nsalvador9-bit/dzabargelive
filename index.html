@@ -239,4 +239,209 @@ document.getElementById("bargeForm").addEventListener("submit",e=>{
 </script>
 
 </body>
+</html>  margin-top:20px;
+  padding:12px;
+  background:#003366;
+  color:white;
+  border:none;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* SITE */
+.navbar { background:#003366; padding:14px; text-align:center; }
+.navbar button { color:white; background:none; border:none; margin:0 20px; cursor:pointer; }
+
+.header { background:white; padding:20px; text-align:center; border-bottom:4px solid #003366; }
+
+.container { max-width:900px; margin:30px auto; padding:20px; }
+
+.section { background:white; padding:20px; margin-bottom:20px; border:1px solid #ddd; }
+
+.hidden { display:none; }
+
+button.primary { background:#003366; color:white; padding:10px; width:100%; border:none; margin-top:10px; }
+
+.button-admin {
+  background:white;
+  border:2px solid #003366;
+  color:#003366;
+  padding:10px;
+  width:100%;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+.status-dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; }
+.dot-green { background:#2e7d32; }
+.dot-grey { background:#757575; }
+.dot-red { background:#b00020; }
+
+.badge-retard {
+  background:#b00020;
+  color:white;
+  padding:2px 6px;
+  font-size:12px;
+}
+
+.footer { background:#003366; color:white; text-align:center; padding:10px; }
+</style>
+</head>
+
+<body>
+
+<!-- ACCUEIL -->
+<div id="homeScreen">
+  <div class="home-box">
+    <h1>Dzabarge Live</h1>
+    <p>Suivi des barges à Mayotte 🇾🇹</p>
+    <button class="home-btn" onclick="enterSite()">Accéder au service</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="navbar">
+<button onclick="showSection('accueil')">Accueil</button>
+<button onclick="showSection('apropos')">À propos</button>
+<button onclick="showSection('mentions')">Mentions légales</button>
+</div>
+
+<div class="header">
+<h1>Dzabarge Live</h1>
+<p>Service d'information maritime à Mayotte</p>
+</div>
+
+<div class="container">
+
+<div id="accueil" class="section">
+
+<h2>État des départs</h2>
+
+<form id="bargeForm">
+
+<label>Sens</label>
+<select id="sens">
+<option>Grande-Terre → Petite-Terre</option>
+<option>Petite-Terre → Grande-Terre</option>
+</select>
+
+<label>Barge</label>
+<select id="barge">
+<option>Polé</option>
+<option>Karihani</option>
+<option>Georges Nahouda</option>
+<option>Chatouilleuse</option>
+<option>Imane</option>
+</select>
+
+<label><input type="radio" name="statut" value="À l'heure" checked> À l’heure</label>
+<label><input type="radio" name="statut" value="À vide"> À vide</label>
+<label><input type="radio" name="statut" value="En retard"> En retard</label>
+
+<div id="retardContainer" style="display:none;">
+<input type="number" id="minutesRetard" placeholder="minutes">
+</div>
+
+<button type="submit" class="primary">Publier</button>
+
+</form>
+
+<div id="resultat"></div>
+<div id="historique"></div>
+
+<button class="button-admin" onclick="resetHistorique()">Réinitialiser l’historique</button>
+
+</div>
+
+<div id="apropos" class="section hidden">
+<h2>À propos</h2>
+<p>Service collaboratif de suivi des barges entre Grande-Terre et Petite-Terre.</p>
+</div>
+
+<div id="mentions" class="section hidden">
+<h2>Mentions légales</h2>
+<p>Nicolas SALVADOR</p>
+<p><span id="email">Cliquez pour afficher</span></p>
+</div>
+
+</div>
+
+<div class="footer">Dzabarge Live © 2026</div>
+
+<script>
+
+function enterSite(){
+  document.getElementById("homeScreen").style.display="none";
+}
+
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+
+document.querySelectorAll('input[name="statut"]').forEach(r=>{
+  r.addEventListener('change',()=>{
+    document.getElementById("retardContainer").style.display = r.value==="En retard" ? "block":"none";
+  });
+});
+
+let historique = JSON.parse(localStorage.getItem("historique")) || [];
+
+function afficherHistorique(){
+  let h = document.getElementById("historique");
+  h.innerHTML = "<h3>Historique</h3>";
+  historique.slice(-5).reverse().forEach(e=>{
+    h.innerHTML += `<div>• ${e}</div>`;
+  });
+}
+
+function resetHistorique(){
+  if(confirm("Supprimer l’historique ?")){
+    localStorage.removeItem("historique");
+    historique=[];
+    afficherHistorique();
+  }
+}
+
+afficherHistorique();
+
+document.getElementById("bargeForm").addEventListener("submit",e=>{
+  e.preventDefault();
+
+  let barge = document.getElementById("barge").value;
+  let sens = document.getElementById("sens").value;
+  let statut = document.querySelector('input[name="statut"]:checked').value;
+  let min = document.getElementById("minutesRetard").value;
+  let heure = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+  let txt;
+
+  if(statut==="À l'heure") txt='<span class="status-dot dot-green"></span>À l’heure';
+  if(statut==="À vide") txt='<span class="status-dot dot-grey"></span>À vide';
+  if(statut==="En retard"){
+    txt='<span class="status-dot dot-red"></span>En retard <span class="badge-retard">'+(min||0)+' min</span>';
+    historique.push(`${barge} – ${sens} – ${min||0} min (${heure})`);
+    localStorage.setItem("historique",JSON.stringify(historique));
+  }
+
+  document.getElementById("resultat").innerHTML =
+  `<div><b>${barge}</b><br>${sens}<br>${txt}<br>${heure}</div>`;
+
+  afficherHistorique();
+});
+
+(function(){
+  let shown=false;
+  function show(){
+    if(shown)return;
+    let email="nsalvador9"+"@"+"ik.me";
+    document.getElementById("email").innerHTML='<a href="mailto:'+email+'">'+email+'</a>';
+    shown=true;
+  }
+  document.addEventListener("click",show,{once:true});
+})();
+
+</script>
+
+</body>
 </html>
